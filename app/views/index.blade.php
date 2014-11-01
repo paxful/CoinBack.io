@@ -1,5 +1,12 @@
 @extends('layouts.master')
 
+@section('includes')
+@parent
+{{ HTML::style('/css/intlTelInput.css') }}
+{{ HTML::style('/plugins/select2/select2.css') }}
+{{ HTML::style('/plugins/select2/select2-custom.css') }}
+@stop
+
 @section('content')
 <!-- .page-header -->
     <header class="page-header container text-center">
@@ -25,7 +32,8 @@
         <div class="col-sm-4 col-sm-offset-1">
             <h3>Merchant sign up —</h3>
         </div>
-        <div class="col-sm-6">
+        <div class="signup-container col-sm-6">
+            @include('session-message')
             @if ( $errors->count() > 0 )
             <div class="alert alert-warning">
                 <p>The following errors have occurred:</p>
@@ -45,6 +53,22 @@
                 </div>
                 <div class="form-group">
                     {{ Form::text('phone', null, array('class' => 'form-control', 'id' => 'phone', 'placeholder' => 'Phone number')) }}
+                </div>
+                {{ Form::hidden('location_id', null, array('id' => 'location_id')) }}
+                <div class="form-group">
+                    {{ Form::text('address', null, array('class' => 'form-control', 'id' => 'address', 'placeholder' => 'Address')) }}
+                </div>
+                <div class="form-group country-container">
+                    {{ Form::select('country', $country, null, array('id' => 'country', 'class' => 'form-control select2')) }}
+                </div>
+                <div class="form-group state-container">
+                    {{ Form::hidden('state', null, array('id' => 'state', 'class' => 'form-control select2')) }}
+                </div>
+                <div class="form-group city-container">
+                    {{ Form::hidden('city', null, array('id' => 'city', 'class' => 'form-control select2')) }}
+                </div>
+                <div class="form-group">
+                    {{ Form::text('post_code', null, array('class' => 'form-control', 'id' => 'post_code', 'placeholder' => 'Postal code')) }}
                 </div>
                 <input class="btn btn-default btn-block" type="submit" value="Register">
                 <span class="succs-msg">message was sent</span>
@@ -114,4 +138,11 @@
         </div>
     </div>
     <!-- /.container -->
+@stop
+
+@section('footer-includes')
+@parent
+{{ HTML::script('js/intlTelInput.min.js'); }}
+{{ HTML::script('plugins/select2/select2.min.js'); }}
+{{ HTML::script('js/custom.js'); }}
 @stop

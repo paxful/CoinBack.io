@@ -74,6 +74,17 @@ return array(
 			'schema'   => 'public',
 		),
 
+		'pgsql2' => array(
+			'driver'   => 'pgsql',
+			'host'     => 'localhost',
+			'database' => 'easybitz',
+			'username' => 'postgres',
+			'password' => 'muhahaha',
+			'charset'  => 'utf8',
+			'prefix'   => '',
+			'schema'   => 'public',
+		),
+
 		'sqlsrv' => array(
 			'driver'   => 'sqlsrv',
 			'host'     => 'localhost',

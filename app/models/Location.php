@@ -3,6 +3,7 @@
 class Location extends Eloquent {
 
 	protected $table = 'locations';
+	protected $connection = 'pgsql2';
 
 	public static function getUserLocationByIp($ip)
 	{
@@ -21,6 +22,15 @@ class Location extends Eloquent {
 			               ->whereRaw('locations.id = ( select geoname_id from blocks where (network_start_ip::ipaddress / network_prefix_length) >>= ?)',
 				               array($ip))->first();
 		}
+	}
+
+	public static function getCountryStates($country_id)
+	{
+		return Location::where('country_id', $country_id)
+		               ->distinct()
+		               ->get(array('subdivision_iso_code', 'subdivision_name'))
+		               ->sortBy('subdivision_iso_code')
+		               ->lists('subdivision_iso_code', 'subdivision_name');
 	}
 
 	public function country()

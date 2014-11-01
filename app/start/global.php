@@ -17,6 +17,7 @@ ClassLoader::addDirectories(array(
 	app_path().'/controllers',
 	app_path().'/models',
 	app_path().'/database/seeds',
+	app_path().'/libraries',
 
 ));
 
@@ -31,7 +32,8 @@ ClassLoader::addDirectories(array(
 |
 */
 
-Log::useFiles(storage_path().'/logs/laravel.log');
+$logFile = 'laravel.log';
+Log::useDailyFiles(storage_path().'/logs/'.$logFile);
 
 /*
 |--------------------------------------------------------------------------
@@ -79,3 +81,10 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+
+Validator::extend('email_ignore_case', function($attribute, $value, $parameters)
+{
+	// ilike is postgresql specific
+	$users = User::where('email', 'ilike', $value)->get();
+	return count($users) ? false : true;
+});

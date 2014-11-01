@@ -8,10 +8,13 @@
     @section('includes')
     {{ HTML::style('css/bootstrap.min.css') }}
     {{ HTML::style('css/style.css') }}
+    {{ HTML::style('css/custom.css') }}
     @show
+    <script type="text/javascript">
+        var basePath = {{ json_encode(URL::to('/')); }};
+    </script>
 </head>
 <body class="home">
-
 <!-- HEADER -->
 <header class="header container">
     <div class="col-xs-3">
@@ -255,7 +258,6 @@
 {{ HTML::script('js/jquery-2.1.1.min.js'); }}
 {{ HTML::script('js/bootstrap.min.js'); }}
 {{ HTML::script('js/jquery.plugins.js'); }}
-{{ HTML::script('js/custom.js'); }}
 @show
 </body>
 </html>

@@ -72,6 +72,14 @@ class ApiHelper {
 		}
 	}
 
+	public static function getClassificator($key_name, $db_table, $column_name)
+	{
+		return Cache::rememberForever($key_name, function() use ($db_table, $column_name)
+		{
+			return $db_table::orderBy('sort_id', 'desc')->lists($column_name, 'id');
+		});
+	}
+
 	private static function runUrl($full_url)
 	{
 		$curl_login = curl_init($full_url);
