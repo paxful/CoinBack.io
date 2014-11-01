@@ -21,6 +21,39 @@
     <!-- /.container -->
 
     <!-- CONTAINER -->
+    <article class="container m-center">
+        <div class="col-sm-4 col-sm-offset-1">
+            <h3>Merchant sign up —</h3>
+        </div>
+        <div class="col-sm-6">
+            @if ( $errors->count() > 0 )
+            <div class="alert alert-warning">
+                <p>The following errors have occurred:</p>
+                <ul>
+                    @foreach( $errors->all() as $message )
+                    <li>{{{ $message }}}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+            {{ Form::open(array('url' => 'control/register', 'role' => 'form', 'id' => 'registerForm')); }}
+                <div class="form-group">
+                    {{ Form::text('business_name', null, array('class' => 'form-control', 'id' => 'business_name', 'placeholder' => 'Business name')) }}
+                </div>
+                <div class="form-group">
+                    {{ Form::email('email', null, array('class' => 'form-control', 'id' => 'email', 'placeholder' => 'Email')) }}
+                </div>
+                <div class="form-group">
+                    {{ Form::text('phone', null, array('class' => 'form-control', 'id' => 'phone', 'placeholder' => 'Phone number')) }}
+                </div>
+                <input class="btn btn-default btn-block" type="submit" value="Register">
+                <span class="succs-msg">message was sent</span>
+            {{ Form::close(); }}
+        </div>
+    </article>
+    <!-- /.container -->
+
+    <!-- CONTAINER -->
     <article class="container text-center">
         <h2>— services —</h2>
         <div class="col-sm-4">

@@ -109,10 +109,6 @@
             this.mixList = $('.mix-list');
             this.masonryWrap = $('.masonry-wrap');
             this.tabLink = $('.tab-link');
-            this.contactForm = $('#send-form');
-            this.contactFormName = $('#send-form-name');
-            this.contactFormEmail = $('#send-form-email');
-            this.contactFormMessage = $('#send-form-message');
             this.emailValidationRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         },
         activate: function () {
@@ -420,53 +416,6 @@
                 }
             }).focusin(function(){
                 $(this).parent().removeClass('has-error');
-            });
-
-            instance.contactForm.on('submit', function(){
-                var isHaveErrors = false;
-
-                if (instance.contactFormName.val() === '') {
-                    isHaveErrors = true;
-                    instance.contactFormName.parent().addClass('has-error');
-                }
-
-                if (instance.contactFormMessage.val() === '') {
-                    isHaveErrors = true;
-                    instance.contactFormMessage.parent().addClass('has-error');
-                }
-
-                if ((instance.contactFormEmail.val() === '') || (!instance.emailValidationRegex.test(instance.contactFormEmail.val()))) {
-                    isHaveErrors = true;
-                    instance.contactFormEmail.parent().addClass('has-error');
-                }
-
-                if (!isHaveErrors) {
-                    $.ajax({
-                        type: 'POST',
-                        url: 'php/email.php',
-                        data: {
-                            name: instance.contactFormName.val(),
-                            email: instance.contactFormEmail.val(),
-                            message: instance.contactFormMessage.val()
-                        },
-                        dataType: 'json'
-                    })
-                        .done(function(answer){
-                            if ((typeof answer.status != 'undefined') && (answer.status == 'ok')) {
-                                $('.succs-msg').fadeIn().css("display","inline-block");
-                                instance.contactFormName.val('');
-                                instance.contactFormEmail.val('');
-                                instance.contactFormMessage.val('');
-                            } else {
-                                alert('Message was not sent. Server-side error!');
-                            }
-                        })
-                        .fail(function(){
-                            alert('Message was not sent. Client error or Internet connection problems.');
-                        });
-                }
-
-                return false;
             });
 
         },
