@@ -13,7 +13,7 @@ return array(
 	|
 	*/
 
-	'debug' => true,
+	'debug' => $_ENV['APP_DEBUG'],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -78,7 +78,7 @@ return array(
 	|
 	*/
 
-	'key' => 'c94LZDQXu7gdBDr1fJyoc94LZDQXu7gd',
+	'key' => $_ENV['ENCRYPTION_KEY'],
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
@@ -188,7 +188,9 @@ return array(
 		'URL'               => 'Illuminate\Support\Facades\URL',
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
-		'MailHelper'        => 'Helpers\MailHelper'
+		'MailHelper'        => 'Helpers\MailHelper',
+		'ApiHelper'         => 'Helpers\ApiHelper',
+		'LocationHelper'    => 'Helpers\LocationHelper'
 
 	),
 

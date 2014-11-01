@@ -11,19 +11,29 @@ class InitialStructure extends Migration {
      */
     public function up()
     {
-        Schema::create('addresses_promo', function($table) {
-            $table->increments('id');
-            $table->string('address', 48);
-            $table->string('promo_code', 40)->nullable()->unique();
-            $table->boolean('activated')->default(false);
-            $table->string('phone', 25)->nullable();
-            $table->text('label')->nullable();
-            $table->bigInteger('user_account_id')->nullable();
-            $table->bigInteger('crypto_bonus_amount')->default(0);
-            $table->integer('crypto_currency_id')->default("1")->nullable()->index();
-            $table->decimal('fiat_bonus_amount', 7, 2)->default(0);
-            $table->integer('fiat_currency_id')->index();
-            $table->timestamps();
+        Schema::create('users', function($table) {
+            $table->bigIncrements('id');
+	        $table->string('email', 255);
+	        $table->string('business_name', 255);
+	        $table->string('password', 64);
+	        $table->rememberToken();
+	        $table->string('ip_address', 45);
+	        $table->string('phone', 45);
+	        $table->string('timezone', 255)->default('America/New_York');
+	        $table->string('bitcoin_address', 48);
+	        $table->text('bitcoin_address_label')->nullable();
+	        $table->bigInteger('bitcoin_balance')->default(0);
+	        $table->bigInteger('bitcoin_total_received')->default(0);
+	        $table->integer('bitcoin_num_transactions')->default(0);
+	        $table->decimal('average_rate')->nullable();
+	        $table->string('qr_code_path', 255)->nullable();
+	        $table->integer('active_fiat_currency_id')->default(144);
+	        $table->integer('country_id')->default(227);
+	        $table->integer('location_id')->nullable();
+	        $table->string('address', 200)->nullable();
+	        $table->string('post_code', 25)->nullable();
+	        $table->dateTime('date_last_login')->default("2001-09-28 01:00:00");
+	        $table->timestamps();
         });
 
 	    /* user

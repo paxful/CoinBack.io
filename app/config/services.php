@@ -28,4 +28,9 @@ return array(
 		'secret' => '',
 	),
 
+	'plivo' => array(
+		'auth_id' => $_ENV['PLIVO_ID'],
+		'auth_token' => $_ENV['PLIVO_TOKEN'],
+		'number' => $_ENV['PLIVO_NUMBER']
+	)
 );

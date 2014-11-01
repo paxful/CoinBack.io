@@ -44,6 +44,8 @@ class ControlController extends BaseController {
 
 		$phone = Input::get('phone');
 
+		$ip_address = App::environment('local') ? '69.162.16.13' : Request::getClientIp(); // if local dev, get current ip in vegas
+
 		// set location for new merchant if found by ip
 		$location   = Location::getUserLocationByIp($ip_address);
 		if (count($location)) {
