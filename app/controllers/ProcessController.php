@@ -67,9 +67,9 @@ class ProcessController extends BaseController {
 
 		$user->save();
 
-		ApiHelper::sendSms($user->phone, $_ENV['PLIVO_NUMBER'], "You received $fiat_amount USD. CoinBack.io");
-
 		Log::info('Inserted new incoming transaction for merchant id: '.$chainNotification->user_id);
+
+		ApiHelper::sendSms($user->phone, $_ENV['PLIVO_NUMBER'], "You received $fiat_amount USD. CoinBack.io");
 
 		return '*ok*';
 	}

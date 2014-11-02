@@ -124,10 +124,10 @@
                     </div>
                 </div>
                 <div class="col-sm-4">
-                    <a href="" class="btn btn-info col-sm-11">Scan</a>
+                    <a href="" class="btn btn-info col-sm-11 disabled">Scan</a>
                 </div>
                 <div class="col-sm-4">
-                    <input class="form-control col-xs-10 col-sm-offset-1" type="text" placeholder="Bitcoin Address">
+                    <input class="form-control col-xs-10 col-sm-offset-1" type="text" placeholder="Bitcoin Address" disabled>
                 </div>
                 <div class="col-sm-4">
                     <input class="form-control col-xs-10 col-sm-offset-1" name="email" id="emai" type="email" placeholder="Email">
@@ -161,8 +161,7 @@
                             <td class="transaction-bitcoin-amount">{{BitcoinHelper::satoshiToBtc($t->remaining_bitcoin)}} BTC</td>
                             <td class="transaction-rate">${{$t->bitcoin_current_rate_usd}}</td>
                             <td class="transaction-worth">${{$t->fiat_amount}}</td>
-                            <td class="order-actions text-right">
-                            </td>
+                            <td class="order-actions text-right">{{!empty($t->sale_profit) ? $t->sale_profit : ''}}</td>
                         </tr>
                     @endforeach
                 </tbody>

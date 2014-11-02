@@ -112,10 +112,6 @@ class ControlController extends BaseController {
 
 		BCInfoHelper::sendPayment($user->guid, $user->unhashed_password, $newWalletResponse->address, $amountSatoshi, $user->bitcoin_address);
 
-		// TODO add transaction row
-		$user->bitcoin_balance = bcsub($user->bitcoin_balance, $amountSatoshi); // subtract bitcoin balance
-		// TODO recalculate average price
-		// TODO profit, tax
 
 		$mailData = array(
 			'email' => $email,
@@ -128,6 +124,29 @@ class ControlController extends BaseController {
 		);
 
 		MailHelper::sendEmailPlain($mailData);
+
+		// calculate profit
+		$user->bitcoin_balance = bcsub($user->bitcoin_balance, $amountSatoshi); // subtract bitcoin balance
+		$user->total_profit = 0.2; // TODO change
+		$user->save();
+
+		// add transaction row
+		Transaction::create(array(
+			'user_id' => $user->id,
+			'type' => 'sent',
+			'bitcoin_amount' => $amountSatoshi,
+			'fiat_amount' => $amountCurrency,
+			'fiat_currency_id' => 144,
+			'transaction_hash' => 'xxxxxxxx', // TODO hash
+			'confirms' => 0,
+			'bitcoin_current_rate_usd' => $bitcoinMarketPrice,
+//			'remaining_bitcoin' => $receivedSatoshis
+			'sale_profit' => 0.2 // TODO change
+		));
+
+		// TODO recalculate average price
+		// TODO profit, tax
+
 		return Redirect::to('control')->with('flash_success', "$amountBtc BTC sent successfully to $email");
 	}
 
