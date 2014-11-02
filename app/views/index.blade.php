@@ -11,10 +11,57 @@
 <!-- .page-header -->
     <header class="page-header container text-center">
         <div class="col-sm-8 col-sm-offset-2">
-            <h1>— welcome —</h1>
+            <h1>— Sell Bitcoin —</h1>
         </div>
     </header>
     <!-- /.page-header -->
+
+
+
+    <!-- CONTAINER -->
+    <article class="container text-center">
+        <div class="col-sm-4">
+            <div class="block bg-info">
+                <div class="icon icon-norm color" data-icon="*"></div>
+                <h4>Accept Bitcoin</h4>
+                <ul>
+                    <li>Project Scoping</li>
+                    <li>System Design</li>
+                    <li>Process Planning</li>
+                    <li>Project management</li>
+                    <li>Support</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="block">
+                <div class="icon icon-norm" data-icon="+"></div>
+                <h4>Sell Bitcoin</h4>
+                <ul>
+                    <li>Graphic design</li>
+                    <li>Interface design</li>
+                    <li>User Experience design</li>
+                    <li>Search Engine Optimization</li>
+                    <li>Authoring</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="block">
+                <div class="icon icon-norm" data-icon="&#xe000;"></div>
+                <h4>Track Your Profit</h4>
+                <ul>
+                    <li>Filmmaking</li>
+                    <li>Television Production</li>
+                    <li>Sound Recording</li>
+                    <li>Sound Reproduction</li>
+                    <li>Performance</li>
+                </ul>
+            </div>
+        </div>
+    </article>
+    <!-- /.container -->
+
 
     <!-- CONTAINER -->
     <article class="container m-center">
@@ -77,50 +124,6 @@
     </article>
     <!-- /.container -->
 
-    <!-- CONTAINER -->
-    <article class="container text-center">
-        <h2>— services —</h2>
-        <div class="col-sm-4">
-            <div class="block bg-info">
-                <div class="icon icon-norm color" data-icon="*"></div>
-                <h4>consulting</h4>
-                <ul>
-                    <li>Project Scoping</li>
-                    <li>System Design</li>
-                    <li>Process Planning</li>
-                    <li>Project management</li>
-                    <li>Support</li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="block">
-                <div class="icon icon-norm" data-icon="+"></div>
-                <h4>web design </h4>
-                <ul>
-                    <li>Graphic design</li>
-                    <li>Interface design</li>
-                    <li>User Experience design</li>
-                    <li>Search Engine Optimization</li>
-                    <li>Authoring</li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="block">
-                <div class="icon icon-norm" data-icon="&#xe000;"></div>
-                <h4>sound art</h4>
-                <ul>
-                    <li>Filmmaking</li>
-                    <li>Television Production</li>
-                    <li>Sound Recording</li>
-                    <li>Sound Reproduction</li>
-                    <li>Performance</li>
-                </ul>
-            </div>
-        </div>
-    </article>
-    <!-- /.container -->
 
     <!-- CONTAINER -->
     <div class="container team text-center">
