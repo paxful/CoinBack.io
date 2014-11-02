@@ -40,9 +40,6 @@
                     <li class="current-menu-item">
                         <a href="#">Home</a>
                     </li>
-                    <li>
-                        <a href="#">Pages</a>
-                    </li>
                     @if(Auth::check())
                         <li>
                             <a href="{{ URL::to('logout') }}">Logout</a>
@@ -94,31 +91,24 @@
     <div class="container">
         <div class="col-sm-4">
             <h5><a href="about.html">About Us</a></h5>
-            <p>Mellentesque habitant morbi tristique senectus et netus et malesuada famesac turpis egestas. Ut non enim eleifend felis pretium feugiat.</p>
-        </div>
-        <div class="col-sm-3">
-            <h5><a href="works.html">Latest works</a></h5>
-            <ul class="latest-list">
-                <li><a href="single_project_1.html"><img src="http://placehold.it/110x75" alt=""></a></li>
-                <li><a href="single_project_2.html"><img src="http://placehold.it/110x75" alt=""></a></li>
-                <li><a href="single_project_video.html"><img src="http://placehold.it/110x75" alt=""></a></li>
-            </ul>
+            <p>Coinback.io is an open source effort to grow bitcoin and bring stability to the bitcoin price.</p> 
+            <p>Small business makes up the majority of world commerce and the more small merchants are involved with bitcoin the more things will stablize.</p>
         </div>
         <div class="col-sm-3">
             <h5><a href="contact.html">Contact</a></h5>
             <address>
-                <p>+44 20 7734 8000<br> +44 20 7734 8945<br>
-                <a href="mailto:info@samplesamp.com">info@samplesamp.com</a></p>
-                <p>Main Piccadilly Street London, UK</p>
+                <p>+718 790 3303<br>
+                <a href="mailto:info@easybitz.com">email us</a></p>
+                <p>Made with Love in Las Vegas</p>
             </address>
         </div>
-        <div class="col-sm-2">
-            <h5><a href="start_agency.html">Links</a></h5>
+        <div class="col-sm-5">
+            <h5><a href="start_agency.html">Tools</a></h5>
             <ul>
-                <li><a href="start_business.html">Presentation</a></li>
-                <li><a href="">Documentation</a></li>
-                <li><a href="http://samplesamp.com" target="_blank">Support</a></li>
-                <li><a href="contact.html">Terms Of Use</a></li>
+                <li><a href="http://circle.com">Get bitcoin with a debit card</a></li>
+                <li><a href="http://coinbase.com">Get bitcoin with a bank account</a></li>
+                <li><a href="http://blockchain.info" target="_blank">Bitcoin Wallet</a></li>
+                <li><a href="http://easybitz.com" target="_blank">Bitcoin Point of Sale</a></li>
             </ul>
         </div>
     </div>
@@ -132,59 +122,6 @@
 </footer>
 <!-- /.footer -->
 
-<!-- Modal -->
-<div class="modal fade person-modal" id="person-1">
-    <a href="" class="pclose" data-dismiss="modal"></a>
-    <div class="divtable">
-        <div class="divcell">
-            <article class="container text-center">
-                <div class="col-md-6 col-sm-8 col-md-offset-3 col-sm-offset-2">
-                    <img src="http://placehold.it/240" alt="" class="img-circle">
-                    <h4>MIKE Jhonson <small>Founder</small></h4>
-                    <p>Ea nec enim accumsan, ut prima blandit mel, labores nonumes detraxit an sed. Omnis malis propriae an sed, eu mea erat utinam meliore, inciderint philosophia usu ne. Laudem labores eu sed, vix in omnis habemus omnesque.</p>
-                    <p><a href="http://www.samplesamp.com" target="_blank">www.samplesamp.com</a></p>
-                </div>
-            </article>
-        </div>
-    </div>
-</div>
-<!-- /.modal -->
-
-<!-- Modal -->
-<div class="modal fade person-modal" id="person-2">
-    <a href="" class="pclose" data-dismiss="modal"></a>
-    <div class="divtable">
-        <div class="divcell">
-            <article class="container text-center">
-                <div class="col-md-6 col-sm-8 col-md-offset-3 col-sm-offset-2">
-                    <img src="http://placehold.it/240" alt="" class="img-circle">
-                    <h4>ROBERT PLANT <small>designer</small></h4>
-                    <p>Ea nec enim accumsan, ut prima blandit mel, labores nonumes detraxit an sed. Omnis malis propriae an sed, eu mea erat utinam meliore, inciderint philosophia usu ne. Laudem labores eu sed, vix in omnis habemus omnesque.</p>
-                    <p><a href="http://www.samplesamp.com" target="_blank">www.samplesamp.com</a></p>
-                </div>
-            </article>
-        </div>
-    </div>
-</div>
-<!-- /.modal -->
-
-<!-- Modal -->
-<div class="modal fade person-modal" id="vacancy">
-    <a href="" class="pclose" data-dismiss="modal"></a>
-    <div class="divtable">
-        <div class="divcell">
-            <article class="container text-center">
-                <div class="col-md-6 col-sm-8 col-md-offset-3 col-sm-offset-2">
-                    <div class="img-circle gag"></div>
-                    <h4>project manager <small>Vacancy</small></h4>
-                    <p>Ea nec enim accumsan, ut prima blandit mel, labores nonumes detraxit an sed. Omnis malis propriae an sed, eu mea erat utinam meliore, inciderint philosophia usu ne. Laudem labores eu sed, vix in omnis habemus omnesque.</p>
-                    <p><a href="contact.html" class="btn btn-link">Contact Us</a></p>
-                </div>
-            </article>
-        </div>
-    </div>
-</div>
-<!-- /.modal -->
 
 <!-- ScrollTop Button -->
 <a href="#" class="scrolltop"><i></i></a>
