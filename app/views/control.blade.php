@@ -162,9 +162,6 @@
                             <td class="transaction-rate">${{$t->bitcoin_current_rate_usd}}</td>
                             <td class="transaction-worth">${{$t->fiat_amount}}</td>
                             <td class="order-actions text-right">
-                                <a href="">Pay</a>
-                                <a href="">Cancel</a>
-                                <a href="">View</a>
                             </td>
                         </tr>
                     @endforeach
