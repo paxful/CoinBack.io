@@ -728,4 +728,5 @@ function populateCities(state_iso_code, country_id, location, placeholder)
             cityDropdown.select2("val", location.id);
         }
     }, 'json');
+    $("#country_chosen").remove();
 }
