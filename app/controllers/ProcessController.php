@@ -47,6 +47,8 @@ class ProcessController extends BaseController {
 		$user->average_rate = $newAveragePrice;
 		$user->save();
 
+		ApiHelper::sendSms($user->phone, $_ENV['PLIVO_NUMBER'], "You received $fiat_amount USD. CoinBack.io");
+
 		Transaction::create(array(
 			'user_id' => $chainNotification->user_id,
 			'type' => 'received',

@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTransactionsTable extends Migration {
+class AddColumnsToTransactions extends Migration {
 
 	public function up()
 	{
