@@ -80,7 +80,7 @@
                     <div class="form-group">
                         <label class="col-xs-4 control-label">Bitcoin</label>
                         <div class="col-xs-6">
-                            <input name="amountBTC" id="amountBTC" class="form-control" type="number" placeholder="0">
+                            <input name="amountBTC" id="amountBTC" class="form-control" type="number" placeholder="0" step="0.00000001">
                         </div>
                     </div>
                     <div class="form-group">

@@ -92,9 +92,43 @@ class ControlController extends BaseController {
 	public function postSendPayment()
 	{
 		$amountBtc = Input::get('amountBTC');
-		$amountCurrency = Input::get('amountCurrency');
 		$email = Input::get('email');
+		$amountSatoshi = bcmul($amountBtc, 100000000);
 
+		$user = Auth::user();
+
+		// validate if merchant has enough balance
+		if ($user->bitcoin_balance < $amountSatoshi) {
+			return Redirect::to('control')->with('flash_error', "Not enough balance");
+		}
+
+	    $bitcoinMarketPrice = ApiHelper::getBitcoinPrice(); // get price from backend
+		$amountCurrency = bcmul($amountBtc, $bitcoinMarketPrice, 2);
+
+		// create new wallet for user
+		$password = substr(hash('sha512',rand()),0,12);
+		$newWalletResponse = json_decode(BCInfoHelper::createNewWallet($password, $email));
+		$newGuid = $newWalletResponse->guid;
+
+		BCInfoHelper::sendPayment($user->guid, $user->unhashed_password, $newWalletResponse->address, $amountSatoshi, $user->bitcoin_address);
+
+		// TODO add transaction row
+		// TODO deduct user balance
+		// TODO recalculate average price
+		// TODO profit, tax
+
+		$mailData = array(
+			'email' => $email,
+			'subject' => "$amountCurrency USD worth of bitcoin purchased",
+			'text' => "You bought $$amountCurrency worth of bitcoin ( $amountBtc BTC ) at a rate of $$bitcoinMarketPrice from ".$user->business_name." on ".date('l jS \of F Y h:i:s')."\n\n
+				The funds are in your wallet at www.blockchain.info/wallet/login\n
+				email: $email\n
+				guid: $newGuid\n
+				password: $password",
+		);
+
+		MailHelper::sendEmailPlain($mailData);
+		return Redirect::to('control')->with('flash_success', "$amountBtc BTC sent successfully to $email");
 	}
 
 	public function getBillCard()
