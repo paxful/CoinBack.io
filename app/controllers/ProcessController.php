@@ -26,7 +26,8 @@ class ProcessController extends BaseController {
 
 		$receivedSatoshis = $payload['received'];
 		$bitcoinCurrentPrice = ApiHelper::getBitcoinPrice();
-		$fiat_amount = $this->fiatAmount( $bitcoinCurrentPrice, $receivedSatoshis, 1 );
+		$fiat_amount_satoshi = bcmul($bitcoinCurrentPrice, $receivedSatoshis, 2);
+		$fiat_amount = bcdiv($fiat_amount_satoshi, SATOSHI_FRACTION, 2);
 
 		$chainNotification = LogNotification::where('notification_id', $result['notification_id'])->first();
 
