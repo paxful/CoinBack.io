@@ -92,12 +92,12 @@
     <!-- CONTAINER -->
     <div class="container">
         <div class="col-sm-4">
-            <h5><a href="about.html">About Us</a></h5>
+            <h5>About Us</h5>
             <p>Coinback.io is an open source effort to grow bitcoin and bring stability to the bitcoin price.</p> 
             <p>Small business makes up the majority of world commerce and the more small merchants are involved with bitcoin the more things will stablize.</p>
         </div>
         <div class="col-sm-3">
-            <h5><a href="contact.html">Contact</a></h5>
+            <h5>Contact</h5>
             <address>
                 <p>+718 790 3303<br>
                 <a href="mailto:info@easybitz.com">email us</a></p>
@@ -105,12 +105,12 @@
             </address>
         </div>
         <div class="col-sm-5">
-            <h5><a href="start_agency.html">Tools</a></h5>
+            <h5>Tools</h5>
             <ul>
-                <li><a href="http://circle.com">Get bitcoin with a debit card</a></li>
-                <li><a href="http://coinbase.com">Get bitcoin with a bank account</a></li>
-                <li><a href="http://blockchain.info" target="_blank">Bitcoin Wallet</a></li>
-                <li><a href="http://easybitz.com" target="_blank">Bitcoin Point of Sale</a></li>
+                <li><a href="http://circle.com" target="_blank">Get bitcoin with a debit card <i class="fa fa-external-link"></i></a></li>
+                <li><a href="http://coinbase.com" target="_blank">Get bitcoin with a bank account <i class="fa fa-external-link"></i></a></li>
+                <li><a href="http://blockchain.info" target="_blank">Bitcoin Wallet <i class="fa fa-external-link"></i></a></li>
+                <li><a href="http://easybitz.com" target="_blank">Bitcoin Point of Sale <i class="fa fa-external-link"></i></a></li>
             </ul>
         </div>
     </div>

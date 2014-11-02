@@ -2,6 +2,9 @@
     margin: 0;
     height: inherit;
 }
+.footer h5 {
+    color: #ccc;
+}
 .signup-container .alert p {
     font-size: 0.8em;
 }
