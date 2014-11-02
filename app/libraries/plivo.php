@@ -515,7 +515,7 @@ class Element {
     }
 
     function addUser($body=NULL, $attributes=array()) {
-        return $this->add(new User($body, $attributes));
+        return $this->add(new UserPlivo($body, $attributes));
     }
 
     function addGetDigits($attributes=array()) {
@@ -712,7 +712,7 @@ class Number extends Element {
     }
 }
 
-class User extends Element {
+class UserPlivo extends Element {
     protected $nestables = array();
 
     protected $valid_attributes = array('sendDigits', 'sendOnPreanswer', 'sipHeaders');
