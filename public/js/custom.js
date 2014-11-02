@@ -654,13 +654,13 @@ countryDropdown.select2({
         });
 
         $("#location_id").val(location.id);
-
+        $("#country_chosen").remove();
         // load the state for that location
         populateStates(location.country_id, location);
-
+        $("#country_chosen").remove();
         // load cities for that location
         populateCities(location.subdivision_iso_code, location.country_id, location, "Select...");
-
+        $("#country_chosen").remove();
     }, "json");
 
 })(jQuery);
