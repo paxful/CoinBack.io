@@ -5,7 +5,7 @@ class Transaction extends Eloquent {
     protected $table = 'transactions';
 
     protected $fillable = array('user_id', 'type', 'note', 'bitcoin_amount', 'fiat_amount', 'fiat_currency_id',
-        'sent_to_address', 'transaction_hash', 'confirms');
+        'sent_to_address', 'transaction_hash', 'confirms', 'bitcoin_current_rate_usd', 'remaining_bitcoin', 'sold', 'sale_profit');
 
 	public static function updateConfirmations($transaction_model, $confirmations) {
 		$transaction_model->confirms = $confirmations;
