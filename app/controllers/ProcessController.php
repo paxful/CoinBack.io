@@ -39,6 +39,11 @@ class ProcessController extends BaseController {
 			$totalBitcoins = bcadd($totalBitcoins, $transactionBitcoins, 8);
 			$transactionAvgBitcoinPrice = bcmul($transactionBitcoins, $t->bitcoin_current_rate_usd, 2);
 			$totalAvgBitcoinPrice = bcadd($totalAvgBitcoinPrice, $transactionAvgBitcoinPrice, 2);
+			if (count($transactions) == 1) {
+				$totalAvgBitcoinPrice = $t->bitcoin_current_rate_usd;
+				$totalBitcoins = 1;
+				continue;
+			}
 		}
 		$newAveragePrice = bcdiv($totalAvgBitcoinPrice, $totalBitcoins, 2);
 

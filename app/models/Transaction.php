@@ -17,7 +17,7 @@ class Transaction extends Eloquent {
 	}
 
 	public static function allUnspent($userId) {
-		return self::where('user_id' , $userId)->get();
+		return self::where('user_id' , $userId)->where('sold', 0)->get();
 	}
 
     public function user() {
