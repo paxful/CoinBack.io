@@ -113,7 +113,7 @@ class ControlController extends BaseController {
 		BCInfoHelper::sendPayment($user->guid, $user->unhashed_password, $newWalletResponse->address, $amountSatoshi, $user->bitcoin_address);
 
 		// TODO add transaction row
-		// TODO deduct user balance
+		$user->bitcoin_balance = bcsub($user->bitcoin_balance, $amountSatoshi); // subtract bitcoin balance
 		// TODO recalculate average price
 		// TODO profit, tax
 
