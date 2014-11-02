@@ -11,7 +11,7 @@ class ControlController extends BaseController {
 
 	public function getIndex()
 	{
-		$transactions = Transaction::where('user_id', Auth::id());
+		$transactions = Transaction::where('user_id', Auth::id())->get();
 		return View::make('control', array('transactions' => $transactions));
 	}
 
