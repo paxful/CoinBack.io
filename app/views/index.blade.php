@@ -137,7 +137,7 @@
         <div class="col-sm-6 col-sm-offset-3">
             <div class="countup extra color" data-increment="1" data-num="100" data-sign="&percnt;">0</div>
             <h3>— satisfaction —</h3>
-            <p>The bitcoin community is passionate and will bring new life to your local network. Profit just flows naturally where there is energy and you will be giving your entire </p>
+            <p>The bitcoin community is passionate and will bring new life to your local network. Profit flows naturally where there is energy and you will be giving your entire </p>
         </div>
     </article>
     <!-- /.container -->
@@ -167,9 +167,9 @@
         <div class="col-sm-6">
             <p>The regulatory landscape in crypto currency is still developing but a few things are clear.</p>
                 
-            <p>Bitcoin is a financial instrument and no state in the union taxes fiancial instruments. Capital gains however, are outlined clearly by the IRS as a tax on the profit made by exchanging commodities or currencies. Capital gains tax is automatically handled by our system. You, the merchant, bear the duty of paying the government. </p>
+            <p>Bitcoin is a financial instrument and no state in the union taxes financial instruments. Capital gains however, are outlined clearly by the IRS as a tax on the profit made by exchanging commodities or currencies. Capital gains tax is automatically handled by our system. You, the merchant, bear the duty of paying the government.</p>
 
-            <p>Merchants in the United States will be limited to selling only $50.00 worth of Bitcoin at a time. This allows merchants to operate without concern for AML (anti money lanunder) issues. International merchants have no such restrictions. Merchants are still encouraged to practice KYC ( know your customer). </p>
+            <p>Merchants in the United States will be limited to selling only $50.00 worth of Bitcoin at a time. This allows merchants to operate without concern for AML (anti money launder) issues. International merchants have no such restrictions. Merchants are still encouraged to practice KYC ( know your customer). </p>
         </div>
     </article>
     <!-- /.container -->

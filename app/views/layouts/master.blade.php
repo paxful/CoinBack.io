@@ -44,9 +44,6 @@
                     <li class="current-menu-item">
                         <a href="#">Home</a>
                     </li>
-                    <li>
-                        <a href="#">Pages</a>
-                    </li>
                 </ul>
             </div>
         </nav>
@@ -102,6 +99,7 @@
                 <p>+718 790 3303<br>
                 <a href="mailto:info@easybitz.com">email us</a></p>
                 <p>Made with Love in Las Vegas</p>
+                <p>This project is Open Source. <a href="https://github.com/skyzer/coinback.io">Github link <i class="fa fa-github"></i></a></p>
             </address>
         </div>
         <div class="col-sm-5">

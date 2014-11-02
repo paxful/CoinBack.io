@@ -1,25 +1,9 @@
-## Laravel PHP Framework
+## CoinBack.IO
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/downloads.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+**The biggest problem in the Bitcoin ecosystem is that not enough people have bitcoins.**
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, and caching.
+We need an easy and a simple way and preferably from a friendly trusted face for people to get bitcoins without wiring money to a remote nation, entering online credit card details and waiting a few days. Our experience has shown us that people are willing to pay a big premium to buy bitcoin in person, especially the first time. Merchants are always hungry for new profitable revenue streams as well. Coinback.io is a win for all parties and has evolved from nine months of working with retail merchants on Bitcoin adoption.
 
-Laravel aims to make the development process a pleasing one for the developer without sacrificing application functionality. Happy developers make the best code. To this end, we've attempted to combine the very best of what we have seen in other web frameworks, including frameworks implemented in other languages, such as Ruby on Rails, ASP.NET MVC, and Sinatra.
+With coinback.io you can easily go to your favourite merchant and buy a small amount of bitcoins instantly. Merchants can acquire bitcoins by selling his products/services for bitcoin. Merchants bitcoins are not tied to the current bitcoin exchange rate, but have the average of the price he has acquired them at. So when a merchant sells his bitcoins he sees what is his average price and what is the current exchange price. Moreover he can decide premium on bitcoins he is selling. A merchant can send Bitcoin to a customer who has no wallet and thanks to the blockchain.info api we create him a new wallet on the fly.
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
-
-## Official Documentation
-
-Documentation for the entire framework can be found on the [Laravel website](http://laravel.com/docs).
-
-### Contributing To Laravel
-
-**All issues and pull requests should be filed on the [laravel/framework](http://github.com/laravel/framework) repository.**
-
-### License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+**The merchant has made profit, a customer has just acquired bitcoin from a trusted local source, the ecosystem has grown and a new bitcoiner.**
