@@ -139,7 +139,7 @@ class ControlController extends BaseController {
 			'transaction_hash' => 'xxxxxxxx', // TODO hash
 			'confirms' => 0,
 			'bitcoin_current_rate_usd' => $bitcoinMarketPrice,
-//			'remaining_bitcoin' => $receivedSatoshis
+			'remaining_bitcoin' => $amountSatoshi,
 			'sale_profit' => 0.2 // TODO change
 		));
 
