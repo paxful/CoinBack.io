@@ -133,7 +133,7 @@
                     <input class="form-control col-xs-10 col-sm-offset-1" name="email" id="emai" type="email" placeholder="Email">
                 </div>
                 <div class="col-xs-12 send-payment-btn-container">
-                    <button id="send-payment-btn" type="submit" class="btn btn-success col-sm-6 col-sm-offset-3">Confirm & Send</button>
+                    <button id="send-payment-btn" type="submit" class="btn btn-success col-sm-6 col-sm-offset-3" onclick="return confirm('Confirm send out bitcoins?');">Confirm & Send</button>
                 </div>
             {{ Form::close() }}
         </div>
