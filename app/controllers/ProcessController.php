@@ -48,7 +48,7 @@ class ProcessController extends BaseController {
 		$totalAvgBitcoinPrice = 0;
 		$totalBitcoins = 0;
 		foreach ($transactions as $t) {
-			$transactionBitcoins = BitcoinHelper::satoshiToBtc($t->remaining);
+			$transactionBitcoins = BitcoinHelper::satoshiToBtc($t->remaining_bitcoin);
 			$totalBitcoins = bcadd($totalBitcoins, $transactionBitcoins, 8);
 			$transactionAvgBitcoinPrice = bcmul($transactionBitcoins, $t->bitcoin_current_rate_usd, 2);
 			$totalAvgBitcoinPrice = bcadd($totalAvgBitcoinPrice, $transactionAvgBitcoinPrice, 2);
