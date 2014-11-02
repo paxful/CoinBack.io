@@ -7,6 +7,8 @@ class ProcessController extends BaseController {
 		$result = Input::all();
 		$payload = $result['payload'];
 
+		Log::info($result);
+
 		// means outgoing payment, because 'sent'
 		if ($payload['sent'] > 0) {
 			return '*ok*'; // do nothing further, send back to Chain HTTP 200
@@ -27,6 +29,23 @@ class ProcessController extends BaseController {
 		$fiat_amount = $this->fiatAmount( $bitcoinCurrentPrice, $receivedSatoshis, 1 );
 
 		$chainNotification = LogNotification::where('notification_id', $result['notification_id'])->first();
+
+		/* get new average price */
+		$transactions = Transaction::allUnspent($chainNotification->user_id);
+		$totalAvgBitcoinPrice = 0;
+		$totalBitcoins = 0;
+		foreach ($transactions as $t) {
+			$transactionBitcoins = BitcoinHelper::satoshiToBtc($t->remaining);
+			$totalBitcoins = bcadd($totalBitcoins, $transactionBitcoins, 8);
+			$transactionAvgBitcoinPrice = bcmul($transactionBitcoins, $t->bitcoin_current_rate_usd, 2);
+			$totalAvgBitcoinPrice = bcadd($totalAvgBitcoinPrice, $transactionAvgBitcoinPrice, 2);
+		}
+		$newAveragePrice = bcdiv($totalAvgBitcoinPrice, $totalBitcoins, 2);
+
+		/* update user with new average price */
+		$user = User::find($chainNotification->user_id);
+		$user->average_rate = $newAveragePrice;
+		$user->save();
 
 		Transaction::create(array(
 			'user_id' => $chainNotification->user_id,

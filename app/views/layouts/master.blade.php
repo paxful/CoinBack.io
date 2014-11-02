@@ -30,9 +30,9 @@
                 <span class="icon-bar"></span>
             </button>
             @if(!Auth::check())
-                <p class="pull-right">
-                    <span>Login | signup </span>
-                </p>
+                <ul class="pull-right">
+                    <li class="cart-list-empty"><a href="" data-toggle="modal" data-target="#loginModal"><i class="fa fa-sign-in"></i> Login</a></li>
+                </ul>
             @endif
             <div class="collapse navbar-collapse pull-right" id="navbar-collapse">
                 <button type="button" class="pclose" data-toggle="collapse" data-target="#navbar-collapse"></button>
@@ -61,6 +61,32 @@
 @yield('content')
 </div>
 <!-- /.wrapper -->
+
+@if(!Auth::check())
+<div class="modal fade bill-cards-modal" id="loginModal">
+    <a href="" class="pclose" data-dismiss="modal"></a>
+    <div class="divtable">
+        <div class="divcell">
+            <article class="container text-center">
+                <div class="col-md-6 col-sm-8 col-md-offset-3 col-sm-offset-2 bill-cards-container">
+                    <div class="icon" data-icon="Z"></div>
+                    <h2>login</h2>
+                    {{ Form::open(array('url' => 'home/login', 'role' => 'form', 'id' => 'loginForm')); }}
+                        <div class="form-group">
+                            <input name="loginEmail" id="loginEmail" class="form-control text-center" type="text" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <input name="password" id="password" class="form-control text-center" type="password" placeholder="Password">
+                        </div>
+                        <input class="btn btn-default" type="submit" value="Login">
+                        <p class="form-control-static"><a href="lost_password.html">Lost Password?</a></p>
+                    </form>
+                </div>
+            </article>
+        </div>
+    </div>
+</div>
+@endif
 
 <!-- FOOTER -->
 <footer class="footer">

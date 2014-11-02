@@ -19,6 +19,16 @@ class HomeController extends BaseController {
 		return View::make('index', $data);
 	}
 
+	public function postLogin()
+	{
+		if ( Auth::attempt( array( 'email' => Input::get( 'loginEmail' ), 'password' => Input::get( 'password' ) ) ) ) {
+			return Redirect::to('control');
+		} else {
+			return Redirect::to('/');
+
+		}
+	}
+
 	public function postRegister()
 	{
 		$rules = array(

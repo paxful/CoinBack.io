@@ -193,7 +193,8 @@ return array(
 		'LocationHelper'    => 'Helpers\LocationHelper',
 		'BCInfoHelper'      => 'Helpers\BCInfoHelper',
 		'ChainComHelper'    => 'Helpers\ChainComHelper',
-		'ImageHelper'       => 'Helpers\ImageHelper'
+		'ImageHelper'       => 'Helpers\ImageHelper',
+		'BitcoinHelper'     => 'Helpers\BitcoinHelper'
 
 	),
 
