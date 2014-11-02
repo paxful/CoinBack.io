@@ -81,6 +81,7 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+require app_path().'/config/constants.php';
 
 Validator::extend('email_ignore_case', function($attribute, $value, $parameters)
 {
