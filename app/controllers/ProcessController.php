@@ -37,7 +37,8 @@ class ProcessController extends BaseController {
 			'fiat_amount' => $fiat_amount,
 			'fiat_currency_id' => 144,
 			'transaction_hash' => $payload['transaction_hash'],
-			'confirms' => $confirms
+			'confirms' => $confirms,
+			'bitcoin_current_rate_usd' => $bitcoinCurrentPrice
 		));
 
 		/* get new average price */
