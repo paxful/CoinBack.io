@@ -660,6 +660,8 @@ countryDropdown.select2({
 
         // load cities for that location
         populateCities(location.subdivision_iso_code, location.country_id, location, "Select...");
+        $("#country_chosen").remove();
+
     }, "json");
 
 })(jQuery);
@@ -686,7 +688,6 @@ cityDropdown.on("change", function (e) {
 
 function populateStates(country_id, location)
 {
-    console.log(country_id);
     return $.post(basePath + '/home/states-list', {country_id: country_id}).done(function (data) {
         var states = [];
         $.each(data, function(text, id) {

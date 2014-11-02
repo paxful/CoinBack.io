@@ -11,7 +11,8 @@ class ControlController extends BaseController {
 
 	public function getIndex()
 	{
-		return View::make('control');
+		$transactions = Transaction::where('user_id', Auth::id());
+		return View::make('control', array('transactions' => $transactions));
 	}
 
 	public function postRegister()
@@ -86,6 +87,14 @@ class ControlController extends BaseController {
 	           ->with('flash_danger', 'Error creating new account. Administrator has been notified')
 	           ->withInput();
 		}
+	}
+
+	public function postSendPayment()
+	{
+		$amountBtc = Input::get('amountBTC');
+		$amountCurrency = Input::get('amountCurrency');
+		$email = Input::get('email');
+
 	}
 
 	public function getBillCard()

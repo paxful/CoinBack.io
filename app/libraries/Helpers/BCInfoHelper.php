@@ -18,8 +18,8 @@ class BCInfoHelper {
 	public static function sendPayment($guid, $pass, $to, $amountSatoshis, $from) {
 		$fullUrl = self::$MERCHANT_URL.$guid.'/payment?password='.$pass.'&to='.$to.'&amount='.$amountSatoshis.'&from='.$from;
 		$response = file_get_contents($fullUrl);
-		$respJson = json_encode($response);
-		Log::info($response);
+		$respJson = json_decode($response);
+		Log::info('sent: '.$response);
 		return '*ok*';
 	}
 }

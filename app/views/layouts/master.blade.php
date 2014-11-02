@@ -79,7 +79,7 @@
                         </div>
                         <input class="btn btn-default" type="submit" value="Login">
                         <p class="form-control-static"><a href="lost_password.html">Lost Password?</a></p>
-                    </form>
+                    {{Form::close()}}
                 </div>
             </article>
         </div>
@@ -93,8 +93,8 @@
     <div class="container">
         <div class="col-sm-4">
             <h5>About Us</h5>
-            <p>Coinback.io is an open source effort to grow bitcoin and bring stability to the bitcoin price.</p> 
-            <p>Small business makes up the majority of world commerce and the more small merchants are involved with bitcoin the more things will stablize.</p>
+            <p>CoinBack.io is an open source effort to grow bitcoin and bring stability to the bitcoin price.</p>
+            <p>Small business makes up the majority of world commerce and the more small merchants are involved with bitcoin the more things will stabilize.</p>
         </div>
         <div class="col-sm-3">
             <h5>Contact</h5>

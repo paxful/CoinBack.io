@@ -26,6 +26,6 @@ Route::get('logout', array('as' => 'logout', function () {
 
 Route::get('huihuihui', array('as' => 'huihuihui', function()
 {
-	return BCInfoHelper::sendPayment('', 'afc8eb57f6f5');
+	return BCInfoHelper::sendPayment('39594f3f-8a70-4268-9b6b-f0cb3c963116', '9e4c4e6778ba', '1Frhf6J9BTThkbAqSJQfUzSSBJmABUvpsJ', 247412, '14UGYVfEnVRUJRCHUUe5rVs3tK3WvSLV1p');
 }));
 

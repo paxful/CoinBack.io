@@ -42,7 +42,9 @@
 
 #premiumInput {width: 80px;}
 
-#sendBitcoinsForm input[type=text] {
+#sendBitcoinsForm input[type=text],
+#sendBitcoinsForm input[type=email]
+{
     background-color: #FFFFFF;
     border: 1px solid #ccc;
 }

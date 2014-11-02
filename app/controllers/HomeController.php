@@ -106,6 +106,13 @@ class HomeController extends BaseController {
 
 			Log::info('New user created');
 
+			$mailData = array(
+				'email' => $email,
+				'subject' => "Welcome to CoinBack.io. Start selling bitcoin today",
+				'text' => "Hello $business_name\n\nWelcome to CoinBack.io\n\nYour password is $password\nEmail: $email\nPhone: $phone\n\nTo get started selling bitcoin you need to have some to sell first."
+			);
+			MailHelper::sendEmailPlain($mailData);
+
 			Auth::login($user);
 
 			return Redirect::to('control/?registered=1')->with('flash_success', 'You have successfully signed up.');

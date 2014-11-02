@@ -57,11 +57,11 @@
     <article class="container text-center inforow bg-info">
         <div class="row bg-info">
             <div class="col-md-3 col-sm-6">
-                <div class="countup" data-increment="3" data-num="{{Auth::user()->average_rate}}" data-fractional="2" data-sign="$">0</div>
+                <div class="countup-skip">${{Auth::user()->average_rate}}</div>
                 <h6>Your Bitcoin Average</h6>
             </div>
             <div class="col-md-3 col-sm-6">
-                <div class="countup" data-increment="69" data-num="{{ApiHelper::getBitcoinPrice()}}" data-fractional="2" data-sign="$">0</div>
+                <div class="countup-skip">${{ApiHelper::getBitcoinPrice()}}</div>
                 <h6>Current market price</h6>
             </div>
             <div class="col-md-3 col-sm-6">
@@ -69,13 +69,13 @@
                 <h6>Your Bitcoins</h6>
             </div>
             <div class="col-md-3 col-sm-6">
-                <div class="countup color" data-increment="24" data-num="{{Auth::user()->total_profit}}" data-sign="$" data-fractional="2">0</div>
+                <div class="countup-skip color">${{Auth::user()->total_profit}}</div>
                 <h6><strong>Your Total profit</strong></h6>
             </div>
         </div>
         <div class="row bg-info selling-container">
         <h3 class="text-center">— Sell —</h3>
-            <form class="form-horizontal" id="sendBitcoinsForm" role="form">
+            {{ Form::open(array('url' => 'control/send-payment', 'class' => 'form-horizontal', 'id' => 'sendBitcoinsForm', 'role' => 'form')) }}
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label class="col-xs-4 control-label">Bitcoin</label>
@@ -137,12 +137,12 @@
                     <input class="form-control col-xs-10 col-sm-offset-1" type="text" placeholder="Bitcoin Address">
                 </div>
                 <div class="col-sm-4">
-                    <input class="form-control col-xs-10 col-sm-offset-1" type="text" placeholder="Email">
+                    <input class="form-control col-xs-10 col-sm-offset-1" name="email" id="emai" type="email" placeholder="Email">
                 </div>
                 <div class="col-xs-12 send-payment-btn-container">
                     <button id="send-payment-btn" type="submit" class="btn btn-success col-sm-6 col-sm-offset-3">Confirm & Send</button>
                 </div>
-            </form>
+            {{ Form::close() }}
         </div>
     </article>
     <!-- /.container -->
@@ -162,7 +162,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($transactions as $t)
+                    @forelse ($transactions as $t)
                         <tr>
                             <td class="transaction-type">{{ $t->type == 'received' ? '<i class="fa fa-download"></i>' : '<i class="fa fa-external-link"></i>' }}</td>
                             <td class="transaction-bitcoin-amount">{{BitcoinHelper::satoshiToBtc($t->remaining_bitcoin)}} BTC</td>
@@ -174,7 +174,9 @@
                                 <a href="">View</a>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr><td colspan="5"><p class="text-center">No transactions yet</p></td></tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -229,5 +231,7 @@
 @parent
 {{ HTML::script('js/intlTelInput.min.js'); }}
 {{ HTML::script('plugins/select2/select2.min.js'); }}
+{{ HTML::script('js/jquery.nouislider.all.min.js'); }}
+{{ HTML::script('js/merchant.js'); }}
 {{ HTML::script('js/custom.js'); }}
 @stop
