@@ -1,17 +1,19 @@
 <?php
 
-class ControlController extends BaseController {
+class HomeController extends BaseController {
 
 	protected $layout = 'layouts.master';
 
-	public function __construct()
-	{
-		$this->beforeFilter('auth');
-	}
-
 	public function getIndex()
 	{
-		return View::make('control');
+		$countries = Cache::rememberForever('countries', function() {
+			return Country::orderBy('sort_id', 'desc')->lists('name', 'id');
+		});
+
+		$data = array(
+			'country' => $countries
+		);
+		return View::make('index', $data);
 	}
 
 	public function postRegister()
@@ -31,8 +33,8 @@ class ControlController extends BaseController {
 		// if the validator fails, redirect back to the form
 		if ($validator->fails()) {
 			return Redirect::to('/')
-               ->withErrors($validator) // send back all errors to the registration form
-               ->withInput(); // send back the input (not the password) so that we can repopulate the form
+			               ->withErrors($validator) // send back all errors to the registration form
+			               ->withInput(); // send back the input (not the password) so that we can repopulate the form
 		}
 
 		$business_name =  Input::get('business_name');
@@ -50,7 +52,7 @@ class ControlController extends BaseController {
 		try {
 			DB::beginTransaction();
 
-			$newWallet = json_encode(BCInfoHelper::createNewWallet($password, $email));
+			$newWallet = json_decode(BCInfoHelper::createNewWallet($password, $email));
 
 			$user = User::create(array(
 				'business_name' => $business_name,
@@ -68,10 +70,19 @@ class ControlController extends BaseController {
 			));
 
 			// TODO qr code path, image
-			// TODO chain.com notification
 
+			$chainComJsonResponse = json_decode(ChainComHelper::createAddressNotification($newWallet->address));
+
+			// if notification created
+			if (isset($chainComJsonResponse->id)) {
+
+			} else {
+				// otherwise create later manually, don't let new user mess with his experience and let him proceed
+			}
 
 			DB::commit();
+
+			Auth::login($user);
 
 			return Redirect::to('control/?registered=1')->with('flash_success', 'You have successfully signed up.');
 		}
@@ -83,8 +94,8 @@ class ControlController extends BaseController {
 //			ApiHelper::sendSMStoAdmins('RuntimeException! Merchant registration does not work!');
 //			MailHelper::sendAdminWarningEmail('RuntimeException! Merchant registration does not work!', "Error: ".$e);
 			return Redirect::to('/')
-	           ->with('flash_danger', 'Error creating new account. Administrator has been notified')
-	           ->withInput();
+			               ->with('flash_danger', 'Error creating new account. Administrator has been notified')
+			               ->withInput();
 		}
 	}
 

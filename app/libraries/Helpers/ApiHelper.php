@@ -80,18 +80,21 @@ class ApiHelper {
 		});
 	}
 
-	private static function runUrl($full_url)
+	public static function runUrl($url, $contentType = 'application/json', $data = null)
 	{
-		$curl_login = curl_init($full_url);
-		curl_setopt($curl_login, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
-		curl_setopt($curl_login, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($curl_login, CURLOPT_HEADER, 0);
-		curl_setopt($curl_login, CURLOPT_VERBOSE, 1);
-		curl_setopt($curl_login, CURLOPT_SSL_VERIFYPEER, 0);
-		curl_setopt($curl_login, CURLOPT_SSL_VERIFYHOST, 0);
-		$json_data = curl_exec($curl_login);
-		curl_close($curl_login);
-
-		return json_decode($json_data);
+		$handle = curl_init($url);
+		curl_setopt($handle, CURLOPT_HTTPHEADER, array('Content-Type: '.$contentType));
+		curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($handle, CURLOPT_HEADER, 0);
+		curl_setopt($handle, CURLOPT_VERBOSE, 1);
+		curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, 0);
+		if ($data) {
+			curl_setopt($handle, CURLOPT_POST, true);
+			curl_setopt($handle, CURLOPT_POSTFIELDS, $data);
+		}
+		$json_data = curl_exec($handle);
+		curl_close($handle);
+		return $json_data;
 	}
 }

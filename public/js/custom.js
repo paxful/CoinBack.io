@@ -646,7 +646,7 @@ countryDropdown.select2({
 (function ($) {
     $(document.body).Aisconverse();
 
-    $.post(basePath+"/control/location-by-ip", function(response) {
+    $.post(basePath+"/home/location-by-ip", function(response) {
         var location = $.parseJSON(response.location);
         $("#phone").intlTelInput({
             defaultCountry: location.country_iso_code.toLowerCase(),
@@ -687,7 +687,7 @@ cityDropdown.on("change", function (e) {
 function populateStates(country_id, location)
 {
     console.log(country_id);
-    return $.post(basePath + '/control/states-list', {country_id: country_id}).done(function (data) {
+    return $.post(basePath + '/home/states-list', {country_id: country_id}).done(function (data) {
         var states = [];
         $.each(data, function(text, id) {
             if (text === "") {
@@ -709,7 +709,7 @@ function populateStates(country_id, location)
 
 function populateCities(state_iso_code, country_id, location, placeholder)
 {
-    $.post(basePath + '/control/cities-list', {state: state_iso_code, country_id: country_id}).done(function (data) {
+    $.post(basePath + '/home/cities-list', {state: state_iso_code, country_id: country_id}).done(function (data) {
         var cities = [];
         $.each(data, function(id, object) {
             if (object.city_name === "") {

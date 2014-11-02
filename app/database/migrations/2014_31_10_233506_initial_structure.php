@@ -36,24 +36,7 @@ class InitialStructure extends Migration {
 	        $table->timestamps();
         });
 
-	    /* user
-	        -id
-	        -email
-	        -business_name
-	        -pass
-	        -token
-	        -ip_address
-	        -bitcoin_address
-	        -bitcoin_balance
-	        -average_rate
-	        -qr_code_path
-	        -fiat_currency_id
-	        -timezone
-	        -location_id
-	        -address
-	        -postal code
-
-	    fiat_currencies
+	    /* fiat_currencies
 	    fiat_currencies_temp
 
 	    locations
@@ -81,7 +64,7 @@ class InitialStructure extends Migration {
      */
     public function down()
     {
-        Schema::drop('addresses_promo');
+        Schema::drop('users');
     }
 
 }

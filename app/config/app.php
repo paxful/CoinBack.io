@@ -190,7 +190,9 @@ return array(
 		'View'              => 'Illuminate\Support\Facades\View',
 		'MailHelper'        => 'Helpers\MailHelper',
 		'ApiHelper'         => 'Helpers\ApiHelper',
-		'LocationHelper'    => 'Helpers\LocationHelper'
+		'LocationHelper'    => 'Helpers\LocationHelper',
+		'BCInfoHelper'      => 'Helpers\BCInfoHelper',
+		'ChainComHelper'    => 'Helpers\ChainComHelper'
 
 	),
 

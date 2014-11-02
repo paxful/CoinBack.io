@@ -44,7 +44,7 @@
                 </ul>
             </div>
             @endif
-            {{ Form::open(array('url' => 'control/register', 'role' => 'form', 'id' => 'registerForm')); }}
+            {{ Form::open(array('url' => 'home/register', 'role' => 'form', 'id' => 'registerForm')); }}
                 <div class="form-group">
                     {{ Form::text('business_name', null, array('class' => 'form-control', 'id' => 'business_name', 'placeholder' => 'Business name')) }}
                 </div>
