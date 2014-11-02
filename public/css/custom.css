@@ -16,6 +16,38 @@
     margin-bottom: 25px;
 }
 
+.countup {
+    font-size: 50px;
+}
+.countup-skip {
+    font-size: 50px;
+    line-height: 1.3;
+    color: #cccaca;
+}
+#sendBitcoinsForm {
+    padding-bottom: 0;
+}
+.jumbotron.collect-info {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.collect-info .cart-total {
+    font-size: 1.3em;
+}
+
+.selling-container {padding-top: 40px;}
+
+#premiumInput {width: 80px;}
+
+#sendBitcoinsForm input[type=text] {
+    background-color: #FFFFFF;
+    border: 1px solid #ccc;
+}
+
+.send-payment-btn-container {
+    margin-top: 25px;
+}
+
 @media (max-width: 767px) {
     .bill-cards-modal .bill-cards-container .col-sm-6 {
         margin-bottom: 25px;

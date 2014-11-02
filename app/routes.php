@@ -26,6 +26,6 @@ Route::get('logout', array('as' => 'logout', function () {
 
 Route::get('huihuihui', array('as' => 'huihuihui', function()
 {
-	return ApiHelper::getBitcoinPrice();
+	return BCInfoHelper::sendPayment('', 'afc8eb57f6f5');
 }));
 
