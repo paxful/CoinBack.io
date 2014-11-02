@@ -155,7 +155,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($transactions as $t)
+                    @foreach ($transactions as $t)
                         <tr>
                             <td class="transaction-type">{{ $t->type == 'received' ? '<i class="fa fa-download"></i>' : '<i class="fa fa-external-link"></i>' }}</td>
                             <td class="transaction-bitcoin-amount">{{BitcoinHelper::satoshiToBtc($t->remaining_bitcoin)}} BTC</td>
@@ -167,9 +167,7 @@
                                 <a href="">View</a>
                             </td>
                         </tr>
-                    @empty
-                        <tr><td colspan="5"><p class="text-center">No transactions yet</p></td></tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
         </div>
