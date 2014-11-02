@@ -192,7 +192,8 @@ return array(
 		'ApiHelper'         => 'Helpers\ApiHelper',
 		'LocationHelper'    => 'Helpers\LocationHelper',
 		'BCInfoHelper'      => 'Helpers\BCInfoHelper',
-		'ChainComHelper'    => 'Helpers\ChainComHelper'
+		'ChainComHelper'    => 'Helpers\ChainComHelper',
+		'ImageHelper'       => 'Helpers\ImageHelper'
 
 	),
 

@@ -1,10 +1,14 @@
 /bootstrap/compiled.php
 /vendor
 /theme
-/.idea
 composer.phar
 composer.lock
 .env.*.php
 .env.php
 .DS_Store
 Thumbs.db
+
+/.idea
+/public/images/bill-cards
+!/public/images/bill-cards/EB-Poster*
+!/public/images/bill-cards/tmp/.gitignore*

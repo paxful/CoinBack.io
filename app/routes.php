@@ -5,6 +5,9 @@ Route::controller('home', 'HomeController');
 Route::controller('process', 'ProcessController');
 Route::get('/', array('as' => 'home', function()
 {
+	if (Auth::check()) {
+		return Redirect::to('control');
+	}
 	$countries = Cache::rememberForever('countries', function() {
 		return Country::orderBy('sort_id', 'desc')->lists('name', 'id');
 	});
@@ -23,6 +26,6 @@ Route::get('logout', array('as' => 'logout', function () {
 
 Route::get('huihuihui', array('as' => 'huihuihui', function()
 {
-	return ChainComHelper::createAddressNotification('17pTq5rKd9jFLNZ7b5vvVKDTCa1o86LQ5P');
+	return ApiHelper::getBitcoinPrice();
 }));
 

@@ -8,9 +8,9 @@ class ChainComHelper {
 		$CHAIN_COM_URL = $_ENV['CHAIN_COM_API_URL'];
 		$data = array(
 			'type' => 'address',
-			'block_chain' => 'bitcoin',
-			'address' => $address,
-			'url' => 'https://www.bigbooties.com',
+			'block_chain' => 'testnet3', // testnet3 / bitcoin
+			'address' => 'mt41RfNP4CwKNvcA7bs6ovmX1c23agC7u3',
+			'url' => 'http://6cfd2335.ngrok.com/coinback/public/process/receive',
 		);
 
 		$ch = curl_init();

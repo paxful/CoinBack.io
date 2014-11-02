@@ -18,7 +18,7 @@
 <!-- HEADER -->
 <header class="header container">
     <div class="col-xs-3">
-        <a href="index.html" class="logo">CoinBack</a>
+        <a href="{{URL::to('/')}}" class="logo">CoinBack</a>
     </div>
     <div class="col-xs-9">
         <!-- Mainmenu -->

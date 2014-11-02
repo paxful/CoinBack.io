@@ -16,7 +16,7 @@ class ApiHelper {
 	{
 		return Cache::remember('bitstamp_ticker', 1, function()
 		{
-			return self::runUrl('https://www.bitstamp.net/api/ticker/');
+			return json_decode(self::runUrl('https://www.bitstamp.net/api/ticker/'));
 		});
 	}
 

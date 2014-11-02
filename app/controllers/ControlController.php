@@ -88,6 +88,22 @@ class ControlController extends BaseController {
 		}
 	}
 
+	public function getBillCard()
+	{
+		if (!Auth::check())
+		{
+			return Redirect::to('/')->with('flash_warning', 'Please login to view the page.');
+		}
+
+		$billCardPath = ImageHelper::createBillCard(Auth::user()->bitcoin_address, public_path(Auth::user()->qr_code_path), Input::get('type'));
+
+		if (!$billCardPath) {
+			return Redirect::intended('/')->with('flash_warning','Unknown bill-card chosen');
+		} else {
+			return Response::download($billCardPath, null, array('Content-Type' => 'image/png'));
+		}
+	}
+
 	public function postLocationByIp()
 	{
 		// local env gives 127.0.0.1 so its not in locations table

@@ -8,3 +8,16 @@
 .signup-container .alert ul li {
     font-size: 0.6em;
 }
+.bill-cards-modal .jumbotron {
+    padding: 15px 0;
+}
+
+.bill-cards-modal .portrait-row {
+    margin-bottom: 25px;
+}
+
+@media (max-width: 767px) {
+    .bill-cards-modal .bill-cards-container .col-sm-6 {
+        margin-bottom: 25px;
+    }
+}

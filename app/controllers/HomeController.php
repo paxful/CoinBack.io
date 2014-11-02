@@ -6,6 +6,9 @@ class HomeController extends BaseController {
 
 	public function getIndex()
 	{
+		if (Auth::check()) {
+			return Redirect::to('control');
+		}
 		$countries = Cache::rememberForever('countries', function() {
 			return Country::orderBy('sort_id', 'desc')->lists('name', 'id');
 		});
@@ -54,12 +57,16 @@ class HomeController extends BaseController {
 
 			$newWallet = json_decode(BCInfoHelper::createNewWallet($password, $email));
 
+			// TODO qr code path, image
+			$qrCodePath = ImageHelper::createDefaultQrCode($newWallet->address); // create default qr code for user
+
 			$user = User::create(array(
 				'business_name' => $business_name,
 				'email' => $email,
 				'phone' => $phone,
 				'ip_address' => $ip_address,
 				'password' => Hash::make($password),
+				'unhashed_password' => $password,
 				'location_id' => $locationId,
 				'country_id' => $location->country->id,
 				'address' => $address,
@@ -67,20 +74,27 @@ class HomeController extends BaseController {
 				'bitcoin_address' => $newWallet->address,
 				'bitcoin_address_label' => 'first',
 				'guid' => $newWallet->guid,
+				'qr_code_path' => $qrCodePath
 			));
-
-			// TODO qr code path, image
 
 			$chainComJsonResponse = json_decode(ChainComHelper::createAddressNotification($newWallet->address));
 
 			// if notification created
 			if (isset($chainComJsonResponse->id)) {
-
+				$logNotification = new LogNotification(array(
+					'notification_id' => $chainComJsonResponse->id,
+					'callback_url' => $chainComJsonResponse->url,
+					'address' => $chainComJsonResponse->address
+				));
+				$user->logs()->save($logNotification);
 			} else {
 				// otherwise create later manually, don't let new user mess with his experience and let him proceed
+				Log::error('Notification for new merchant ('.$email.') was not created for following address: '.$newWallet->address);
 			}
 
 			DB::commit();
+
+			Log::info('New user created');
 
 			Auth::login($user);
 
