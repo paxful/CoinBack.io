@@ -11,7 +11,8 @@ class ControlController extends BaseController {
 
 	public function getIndex()
 	{
-		return View::make('control');
+		$transactions = Transaction::allUnspent(Auth::id());
+		return View::make('control', array('transactions' => $transactions));
 	}
 
 	public function postRegister()

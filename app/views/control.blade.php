@@ -64,20 +64,20 @@
     <!-- CONTAINER -->
     <article class="container text-center inforow">
         <div class="col-md-3 col-sm-6">
-            <div class="countup" data-increment="3" data-num="324">0</div>
-            <h4>clients</h4>
+            <div class="countup" data-increment="3" data-num="{{Auth::user()->average_rate}}" data-fractional="2" data-sign="$">0</div>
+            <h6>Your Bitcoin Average</h6>
         </div>
         <div class="col-md-3 col-sm-6">
-            <div class="countup" data-increment="69" data-num="6980">0</div>
-            <h4>burgers</h4>
+            <div class="countup" data-increment="69" data-num="{{ApiHelper::getBitcoinPrice()}}" data-fractional="2" data-sign="$">0</div>
+            <h6>Current market price</h6>
         </div>
         <div class="col-md-3 col-sm-6">
-            <div class="countup" data-increment="8" data-num="780">0</div>
-            <h4>projects</h4>
+            <div class="countup-skip">{{BitcoinHelper::satoshiToBtc(Auth::user()->bitcoin_balance)}}</div>
+            <h6>Your Bitcoins</h6>
         </div>
         <div class="col-md-3 col-sm-6">
-            <div class="countup" data-increment="24" data-num="2450">0</div>
-            <h4>sketches</h4>
+            <div class="countup color" data-increment="24" data-num="2450" data-sign="$">0</div>
+            <h6><strong>Your Total profit</strong></h6>
         </div>
     </article>
     <!-- /.container -->
@@ -97,102 +97,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="order-number"><a href="">#80</a></td>
-                        <td class="order-date">August 29, 2014</td>
-                        <td class="order-status">Pending</td>
-                        <td class="order-total">$35 for 1 item</td>
-                        <td class="order-actions text-right">
-                            <a href="">Pay</a>
-                            <a href="">Cancel</a>
-                            <a href="">View</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="order-number"><a href="">#79</a></td>
-                        <td class="order-date">August 9, 2014</td>
-                        <td class="order-status">Pending</td>
-                        <td class="order-total">$38.95 for 2 items</td>
-                        <td class="order-actions text-right">
-                            <a href="">Pay</a>
-                            <a href="">Cancel</a>
-                            <a href="">View</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="order-number"><a href="">#62</a></td>
-                        <td class="order-date">May 13, 2013</td>
-                        <td class="order-status color">Cancelled</td>
-                        <td class="order-total">$184 for 6 items</td>
-                        <td class="order-actions text-right">
-                            <a href="">View</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="order-number"><a href="">#61</a></td>
-                        <td class="order-date">April 3, 2013</td>
-                        <td class="order-status color">Cancelled</td>
-                        <td class="order-total">$35 for 1 item</td>
-                        <td class="order-actions text-right">
-                            <a href="">View</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="order-number"><a href="">#60</a></td>
-                        <td class="order-date">December 29, 2012 </td>
-                        <td class="order-status color">Cancelled</td>
-                        <td class="order-total">$3 500 for 1 item</td>
-                        <td class="order-actions text-right">
-                            <a href="">View</a>
-                        </td>
-                    </tr>
+                    @foreach ($transactions as $t)
+                        <tr>
+                            <td class="transaction-type">{{ $t->type == 'received' ? '<i class="fa fa-download"></i>' : '<i class="fa fa-external-link"></i>' }}</td>
+                            <td class="transaction-bitcoin-amount">{{BitcoinHelper::satoshiToBtc($t->remaining_bitcoin)}} BTC</td>
+                            <td class="transaction-rate">${{$t->bitcoin_current_rate_usd}}</td>
+                            <td class="transaction-worth">${{$t->fiat_amount}}</td>
+                            <td class="order-actions text-right">
+                                <a href="">Pay</a>
+                                <a href="">Cancel</a>
+                                <a href="">View</a>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
-        </div>
-    </article>
-    <!-- /.container -->
-
-    <!-- CONTAINER -->
-    <article class="container text-center">
-        <h2>— services —</h2>
-        <div class="col-sm-4">
-            <div class="block bg-info">
-                <div class="icon icon-norm color" data-icon="*"></div>
-                <h4>consulting</h4>
-                <ul>
-                    <li>Project Scoping</li>
-                    <li>System Design</li>
-                    <li>Process Planning</li>
-                    <li>Project management</li>
-                    <li>Support</li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="block">
-                <div class="icon icon-norm" data-icon="+"></div>
-                <h4>web design </h4>
-                <ul>
-                    <li>Graphic design</li>
-                    <li>Interface design</li>
-                    <li>User Experience design</li>
-                    <li>Search Engine Optimization</li>
-                    <li>Authoring</li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="block">
-                <div class="icon icon-norm" data-icon="&#xe000;"></div>
-                <h4>sound art</h4>
-                <ul>
-                    <li>Filmmaking</li>
-                    <li>Television Production</li>
-                    <li>Sound Recording</li>
-                    <li>Sound Reproduction</li>
-                    <li>Performance</li>
-                </ul>
-            </div>
         </div>
     </article>
     <!-- /.container -->

@@ -31,7 +31,7 @@ class ProcessController extends BaseController {
 		$chainNotification = LogNotification::where('notification_id', $result['notification_id'])->first();
 
 		/* get new average price */
-		$transactions = Transaction::allUnspent($chainNotification->user_id);
+		$transactions = Transaction::allReceivedUnspent($chainNotification->user_id);
 		$totalAvgBitcoinPrice = 0;
 		$totalBitcoins = 0;
 		foreach ($transactions as $t) {
@@ -45,6 +45,9 @@ class ProcessController extends BaseController {
 		/* update user with new average price */
 		$user = User::find($chainNotification->user_id);
 		$user->average_rate = $newAveragePrice;
+		$user->bitcoin_balance = bcadd($user->bitcoin_balance, $receivedSatoshis);
+		$user->bitcoin_total_received = bcadd($user->bitcoin_total_received, $receivedSatoshis);
+		$user->bitcoin_num_transaction = bcadd($user->bitcoin_num_transaction, 1);
 		$user->save();
 
 		Transaction::create(array(

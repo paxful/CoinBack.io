@@ -585,10 +585,10 @@
         countUp: function(){
             var instance = this,
                 obj = {
-                signPos: 'after',
-                delay: 30,
-                orderSeparator: ' ',
-                decimalSeparator: ','
+                signPos: 'before',
+                delay: 0,
+                orderSeparator: ',',
+                decimalSeparator: '.'
             };
 
             if (instance.countup.length > 0){
@@ -686,7 +686,6 @@ cityDropdown.on("change", function (e) {
 
 function populateStates(country_id, location)
 {
-    console.log(country_id);
     return $.post(basePath + '/home/states-list', {country_id: country_id}).done(function (data) {
         var states = [];
         $.each(data, function(text, id) {

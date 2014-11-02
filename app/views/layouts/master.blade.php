@@ -29,11 +29,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            @if(!Auth::check())
                 <ul class="pull-right">
-                    <li class="cart-list-empty"><a href="" data-toggle="modal" data-target="#loginModal"><i class="fa fa-sign-in"></i> Login</a></li>
+                    <li class="cart-list-empty">
+                        @if(!Auth::check())
+                            <a href="" data-toggle="modal" data-target="#loginModal"><i class="fa fa-sign-in"></i> Login</a>
+                        @else
+                            <a href="{{ URL::to('logout') }}" data-toggle="modal" data-target="#loginModal"><i class="fa fa-sign-out"></i> Logout</a>
+                        @endif
+                    </li>
                 </ul>
-            @endif
             <div class="collapse navbar-collapse pull-right" id="navbar-collapse">
                 <button type="button" class="pclose" data-toggle="collapse" data-target="#navbar-collapse"></button>
                 <ul class="nav navbar-nav pull-right">
@@ -43,11 +47,6 @@
                     <li>
                         <a href="#">Pages</a>
                     </li>
-                    @if(Auth::check())
-                        <li>
-                            <a href="{{ URL::to('logout') }}">Logout</a>
-                        </li>
-                    @endif
                 </ul>
             </div>
         </nav>

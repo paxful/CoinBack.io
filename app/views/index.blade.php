@@ -118,7 +118,6 @@
                     {{ Form::text('post_code', null, array('class' => 'form-control', 'id' => 'post_code', 'placeholder' => 'Postal code')) }}
                 </div>
                 <input class="btn btn-default btn-block" type="submit" value="Register">
-                <span class="succs-msg">message was sent</span>
             {{ Form::close(); }}
         </div>
     </article>

@@ -16,6 +16,10 @@ class Transaction extends Eloquent {
 		return self::where('transaction_hash' , '=', $tx_hash)->first();
 	}
 
+	public static function allReceivedUnspent($userId) {
+		return self::where('user_id' , $userId)->where('type', 'received')->get();
+	}
+
 	public static function allUnspent($userId) {
 		return self::where('user_id' , $userId)->get();
 	}

@@ -16,6 +16,15 @@
     margin-bottom: 25px;
 }
 
+.countup {
+    font-size: 50px;
+}
+.countup-skip {
+    font-size: 50px;
+    line-height: 1.3;
+    color: #cccaca;
+}
+
 @media (max-width: 767px) {
     .bill-cards-modal .bill-cards-container .col-sm-6 {
         margin-bottom: 25px;
