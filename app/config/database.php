@@ -74,12 +74,12 @@ return array(
 			'schema'   => 'public',
 		),
 
-		'pgsql2' => array(
+		$_ENV['DATABASE_2'] => array(
 			'driver'   => 'pgsql',
 			'host'     => 'localhost',
-			'database' => 'easybitz',
-			'username' => 'postgres',
-			'password' => 'muhahaha',
+			'database' => $_ENV['DATABASE_2_NAME'],
+			'username' => $_ENV['DATABASE_2_USER'],
+			'password' => $_ENV['DATABASE_2_PASSWORD'],
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',
