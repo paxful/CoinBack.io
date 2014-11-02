@@ -170,23 +170,9 @@
             <p>Bitcoin is a financial instrument and no state in the union taxes fiancial instruments. Capital gains however, are outlined clearly by the IRS as a tax on the profit made by exchanging commodities or currencies. Capital gains tax is automatically handled by our system. You, the merchant, bear the duty of paying the government. </p>
 
             <p>Merchants in the United States will be limited to selling only $50.00 worth of Bitcoin at a time. This allows merchants to operate without concern for AML (anti money lanunder) issues. International merchants have no such restrictions. Merchants are still encouraged to practice KYC ( know your customer). </p>
-
-
-            </p>
         </div>
     </article>
     <!-- /.container -->
-
-
-    <header class="page-header container text-center">
-        <div class="col-sm-8 col-sm-offset-2">
-            <h2>Meet your Future Customers</h2>
-            <iframe width="560" height="315" src="//www.youtube.com/embed/VzWIwy68dvo" frameborder="0" allowfullscreen></iframe>
-        </div>
-    </header>
-    <!-- /.page-header -->
-
-
 @stop
 
 @section('footer-includes')

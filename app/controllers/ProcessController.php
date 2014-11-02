@@ -30,6 +30,16 @@ class ProcessController extends BaseController {
 
 		$chainNotification = LogNotification::where('notification_id', $result['notification_id'])->first();
 
+		Transaction::create(array(
+			'user_id' => $chainNotification->user_id,
+			'type' => 'received',
+			'bitcoin_amount' => $receivedSatoshis,
+			'fiat_amount' => $fiat_amount,
+			'fiat_currency_id' => 144,
+			'transaction_hash' => $payload['transaction_hash'],
+			'confirms' => $confirms
+		));
+
 		/* get new average price */
 		$transactions = Transaction::allUnspent($chainNotification->user_id);
 		$totalAvgBitcoinPrice = 0;
@@ -50,19 +60,13 @@ class ProcessController extends BaseController {
 		/* update user with new average price */
 		$user = User::find($chainNotification->user_id);
 		$user->average_rate = $newAveragePrice;
+		$user->bitcoin_balance = bcadd($user->bitcoin_balance, $receivedSatoshis);
+		$user->bitcoin_num_transactions = $user->bitcoin_num_transactions + 1;
+
 		$user->save();
 
 		ApiHelper::sendSms($user->phone, $_ENV['PLIVO_NUMBER'], "You received $fiat_amount USD. CoinBack.io");
 
-		Transaction::create(array(
-			'user_id' => $chainNotification->user_id,
-			'type' => 'received',
-			'bitcoin_amount' => $receivedSatoshis,
-			'fiat_amount' => $fiat_amount,
-			'fiat_currency_id' => 144,
-			'transaction_hash' => $payload['transaction_hash'],
-			'confirms' => $confirms
-		));
 
 		Log::info('Inserted new incoming transaction for merchant id: '.$chainNotification->user_id);
 
