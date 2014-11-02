@@ -31,22 +31,15 @@
         </div>
         <div class="col-sm-6 m-center">
             <h3>Get started</h3>
-            <span class="price">
-                <span class="amount">$ 59,00</span>
-            </span>
-            <p>Acquire your bitcoins</p>
+            <p>Acquire your first bitcoins bitcoins by selling your goods or services or use one of our following partners</p>
             <table class="table cart-total">
                 <tr>
-                    <th>SKU</th>
-                    <td class="text-muted">345 678 0001</td>
+                    <th>With Credit Card</th>
+                    <td><a href="https://www.circle.com" target="_blank">Circle</a></td>
                 </tr>
                 <tr>
-                    <th>Category</th>
-                    <td><a href="catalog_grid_sidebar_2.html">Bar Stool</a>, <a href="catalog_list_sidebar_2.html">Armchair</a></td>
-                </tr>
-                <tr>
-                    <th>Tags</th>
-                    <td><a href="catalog_grid.html">Contemporary</a>, <a href="catalog_list_sidebar_1.html">Plastic</a>, <a href="catalog_list_sidebar_2.html">Outdoor</a></td>
+                    <th>With Your Bank</th>
+                    <td><a href="https://www.coinbase.com" target="_blank">Coinbase</a></td>
                 </tr>
             </table>
         </div>
