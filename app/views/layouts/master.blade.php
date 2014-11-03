@@ -19,6 +19,7 @@
 <header class="header container">
     <div class="col-xs-3">
         <a href="{{URL::to('/')}}" class="logo">CoinBack</a>
+        <span>project by <a href="https://easybitz.com">easybitz.com</a></span>
     </div>
     <div class="col-xs-9">
         <!-- Mainmenu -->
