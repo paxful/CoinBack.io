@@ -35,26 +35,6 @@ class InitialStructure extends Migration {
 	        $table->dateTime('date_last_login')->default("2001-09-28 01:00:00");
 	        $table->timestamps();
         });
-
-	    /* fiat_currencies
-	    fiat_currencies_temp
-
-	    locations
-	    blocks
-
-	    transactions
-	        -id
-	        -user_id
-	        -type: send/receive
-	        -note
-	        -crypto_amount
-	        -fiat_amount
-	        -fiat_currency_id
-	        -send_to_address
-	        -tx_hash
-	        -confirms
-	    logs
-	    */
     }
 
     /**

@@ -11,7 +11,7 @@
     <!-- .page-header -->
     <header class="page-header container text-center" style="margin-bottom:0;">
         <div class="col-sm-10 col-sm-offset-1">
-            <h2>Be Your Own Bitcoin Exchange</h2>
+            <h1>{{trans('home.welcome_title')}}</h1>
         </div>
     </header>
     <!-- /.page-header -->
@@ -58,7 +58,7 @@
     <!-- /.container -->
 
     <!-- CONTAINER -->
-    <article class="container m-center">
+    <article id="merchantRegister" class="container m-center">
         <div class="col-sm-12 col-sm-offset-2">
             <div class="signup-container col-sm-8">
                 <h3>— Merchant sign up —</h3>
@@ -74,13 +74,13 @@
                     </div>
                 @endif
                 {{ Form::open(array('url' => 'home/register', 'role' => 'form', 'id' => 'registerForm')); }}
-                    <div class="form-group">
+                    <div class="form-group @if ($errors->has('business_name')) has-error @endif">
                         {{ Form::text('business_name', null, array('class' => 'form-control', 'id' => 'business_name', 'placeholder' => 'Business name')) }}
                     </div>
-                    <div class="form-group">
-                        {{ Form::email('email', null, array('class' => 'form-control', 'id' => 'email', 'placeholder' => 'Email')) }}
+                    <div class="form-group @if ($errors->has('email')) has-error @endif">
+                        {{ Form::text('email', null, array('class' => 'form-control', 'id' => 'email', 'placeholder' => 'Email')) }}
                     </div>
-                    <div class="form-group">
+                    <div class="form-group @if ($errors->has('phone')) has-error @endif">
                         {{ Form::text('phone', null, array('class' => 'form-control', 'id' => 'phone', 'placeholder' => 'Phone number')) }}
                     </div>
                     {{ Form::hidden('location_id', null, array('id' => 'location_id')) }}
@@ -99,8 +99,9 @@
                     <div class="form-group">
                         {{ Form::text('post_code', null, array('class' => 'form-control', 'id' => 'post_code', 'placeholder' => 'Postal code')) }}
                     </div>
-                    <input class="btn btn-default btn-block" type="submit" value="Start">
-                    <span class="succs-msg">message was sent</span>
+                    <button id="merchant-sign-up-btn" class="btn btn-default btn-block ladda-button" data-style="zoom-in" type="submit">
+                        <span class="ladda-label">Start</span>
+                    </button>
                 {{ Form::close(); }}
             </div>
 
@@ -153,7 +154,7 @@
             <div class="col-sm-8 col-sm-offset-2">
                 <blockquote>
                     <p>“ I only make 57 cents on a pack of cigarettes. With bitcoin I make around $7.00 in profit. A few sales a day really makes the difference between being in the black and the red.  ”</p>
-                    <footer>Kay's NewsStand on 35th n 2nd</footer>
+                    <footer>Kay's NewsStand on 35th Street and 2nd Avenue, New York City</footer>
                 </blockquote>
             </div>
         </div>

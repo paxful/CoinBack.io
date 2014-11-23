@@ -7,6 +7,7 @@
     <link href="{{ URL::to('favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
     @section('includes')
     {{ HTML::style('css/bootstrap.min.css') }}
+    {{ HTML::style('css/ladda-themeless.min.css') }}
     {{ HTML::style('css/style.css') }}
     {{ HTML::style('css/custom.css') }}
     @show
@@ -60,14 +61,15 @@
 <!-- /.wrapper -->
 
 @if(!Auth::check())
-<div class="modal fade bill-cards-modal" id="loginModal">
-    <a href="" class="pclose" data-dismiss="modal"></a>
+<div class="modal fade" id="loginModal">
+    <a href="#" class="pclose" data-dismiss="modal"></a>
     <div class="divtable">
         <div class="divcell">
             <article class="container text-center">
                 <div class="col-md-6 col-sm-8 col-md-offset-3 col-sm-offset-2 bill-cards-container">
                     <div class="icon" data-icon="Z"></div>
                     <h2>login</h2>
+                    <div id="login-modal-form-message"></div>
                     {{ Form::open(array('url' => 'home/login', 'role' => 'form', 'id' => 'loginForm')); }}
                         <div class="form-group">
                             <input name="loginEmail" id="loginEmail" class="form-control text-center" type="text" placeholder="Email">
@@ -75,9 +77,35 @@
                         <div class="form-group">
                             <input name="password" id="password" class="form-control text-center" type="password" placeholder="Password">
                         </div>
-                        <input class="btn btn-default" type="submit" value="Login">
-                        <p class="form-control-static"><a href="lost_password.html">Lost Password?</a></p>
+                        <button id="btn-login-modal" class="btn btn-default btn-block ladda-button" data-style="zoom-in" type="submit">
+                            <span class="ladda-label">Log in</span>
+                        </button>
+                        <p class="form-control-static"><a href="#" data-toggle="modal" data-dismiss="modal" data-target="#forgotModal">{{trans('home.lost_password')}}</a></p>
                     {{Form::close()}}
+                </div>
+            </article>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="forgotModal" tabindex="-1" role="dialog" aria-labelledby="forgot-modal-label" aria-hidden="true">
+    <a href="#" class="pclose" data-dismiss="modal"></a>
+    <div class="divtable">
+        <div class="divcell">
+            <article class="container text-center">
+                <div class="col-md-6 col-sm-8 col-md-offset-3 col-sm-offset-2 bill-cards-container">
+                    <div class="icon" data-icon="Z"></div>
+                    <h2>forgot password</h2>
+                    <div id="reminder-modal-form-message"></div>
+                    <form action="{{ action('RemindersController@postRemind') }}" id="resetForm" role="form" method="POST">
+                        <div class="form-group">
+                            {{ Form::label('forgotPassEmail', 'Email', array('class' => 'sr-only'))}}
+                            {{ Form::email('forgotPassEmail', null, array('class' => 'form-control', 'id' => 'forgotPassEmail', 'placeholder' => 'Email')) }}
+                        </div>
+                        <button id="btn-reset-pass-modal" class="btn btn-primary btn-lg btn-block ladda-button" data-style="zoom-in" type="submit">
+                            <span class="ladda-label">Get Password</span>
+                        </button>
+                        <p><a href="#" data-toggle="modal" data-dismiss="modal" data-target="#loginModal">Login</a></p>
+                    </form>
                 </div>
             </article>
         </div>
@@ -130,6 +158,40 @@
 {{ HTML::script('js/jquery-2.1.1.min.js'); }}
 {{ HTML::script('js/bootstrap.min.js'); }}
 {{ HTML::script('js/jquery.plugins.js'); }}
+{{ HTML::script('js/spin.min.js'); }}
+{{ HTML::script('js/ladda.min.js'); }}
+{{ HTML::script('js/ladda.jquery.min.js'); }}
 @show
+@if(!Auth::check())
+    <script type="text/javascript">
+    $(document).ready(function() {
+        var loginBtn = $( '#btn-login-modal' );
+
+        loginBtn.click(function(e) {
+            e.preventDefault();
+
+            loginBtn.ladda();
+            loginBtn.ladda('start');
+
+            $("#login-modal-form-message").empty();
+            var $form = $('#loginForm');
+
+            var token = $form.find( "input[name='_token']" ).val();
+            var email = $form.find( "input[name='loginEmail']" ).val();
+            var pass = $form.find( "input[name='password']" ).val();
+
+            $.post($form.attr('action'), { email: email, password: pass, token: token }).done(function( data ) {
+                if (data.status == 'success') {
+                    $("#login-modal-form-message").html(data.message).fadeIn();
+                    window.location.href = data.redirect;
+                } else {
+                    $("#login-modal-form-message").html(data.message).fadeIn();
+                    loginBtn.ladda('stop');
+                }
+            }, 'json');
+        });
+    });
+    </script>
+@endif
 </body>
 </html>

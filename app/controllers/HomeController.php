@@ -21,12 +21,22 @@ class HomeController extends BaseController {
 
 	public function postLogin()
 	{
-		if ( Auth::attempt( array( 'email' => Input::get( 'loginEmail' ), 'password' => Input::get( 'password' ) ) ) ) {
-			return Redirect::to('control');
-		} else {
-			return Redirect::to('/');
-
+		static $alertContainer = '<div class="alert alert-%s" role="alert">%s</div>';
+		if (Session::token() != Input::get('token'))
+		{
+			Log::warning('Login hack attempt. Token didn\'t match, input data: '.json_encode(Input::all()));
+			return Response::json(array('status' => 'fail', 'message' => sprintf($alertContainer, 'warning', trans('home.system_error'))));
 		}
+
+		if (Auth::attempt(array('email' => Input::get('email'), 'password' => Input::get('password')))) {
+			$logged_in_user = Auth::user();
+			$logged_in_user->date_last_login = date('Y-m-d H:i:s');
+			$logged_in_user->login_times = $logged_in_user->login_times + 1;
+			$logged_in_user->save();
+			$redirectUrl = App::environment('production') ? secure_url('control') : url('control'); // if production, then https, otherwise http
+			return Response::json(array('status' => 'success', 'redirect' => $redirectUrl, 'message' => sprintf($alertContainer, 'success', 'Logged in successfully, redirecting to your dashboard...')));
+		}
+		return Response::json(array('status' => 'fail', 'message' => sprintf($alertContainer, 'warning', 'Incorrect email or password')));
 	}
 
 	public function postRegister()
@@ -45,7 +55,7 @@ class HomeController extends BaseController {
 
 		// if the validator fails, redirect back to the form
 		if ($validator->fails()) {
-			return Redirect::to('/')
+			return Redirect::to('/#merchantRegister')
 			               ->withErrors($validator) // send back all errors to the registration form
 			               ->withInput(); // send back the input (not the password) so that we can repopulate the form
 		}
@@ -124,7 +134,7 @@ class HomeController extends BaseController {
 			Log::error($e);
 //			ApiHelper::sendSMStoAdmins('RuntimeException! Merchant registration does not work!');
 //			MailHelper::sendAdminWarningEmail('RuntimeException! Merchant registration does not work!', "Error: ".$e);
-			return Redirect::to('/')
+			return Redirect::to('/#merchantRegister')
 			               ->with('flash_danger', 'Error creating new account. Administrator has been notified')
 			               ->withInput();
 		}

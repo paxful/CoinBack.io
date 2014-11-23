@@ -65,6 +65,15 @@
     color: #e7543d;
 }
 
+.btn-default[disabled].ladda-button {
+    border-color: transparent;
+}
+#login-modal-form-message,
+#reminder-modal-form-message
+{
+    margin-bottom: 10px;
+}
+
 @media (max-width: 767px) {
     .bill-cards-modal .bill-cards-container .col-sm-6 {
         margin-bottom: 25px;

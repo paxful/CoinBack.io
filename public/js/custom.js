@@ -109,7 +109,6 @@
             this.mixList = $('.mix-list');
             this.masonryWrap = $('.masonry-wrap');
             this.tabLink = $('.tab-link');
-            this.emailValidationRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         },
         activate: function () {
             var instance = this;
@@ -725,3 +724,8 @@ function populateCities(state_iso_code, country_id, location, placeholder)
         }
     }, 'json');
 }
+
+var merchantRegisterBtn = $('#merchant-sign-up-btn');
+if (merchantRegisterBtn.length > 0) {
+    merchantRegisterBtn.ladda('bind');
+};
