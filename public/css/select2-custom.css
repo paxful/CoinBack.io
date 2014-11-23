@@ -175,3 +175,59 @@
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
 }
+
+/* for coinback */
+.form-control.select2-container {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 17px;
+    font-weight: 300;
+    min-width: 69px;
+}
+.form-control .select2-choice,
+.select2-container .select2-choice
+{
+    border: 0;
+    position: relative;
+    display: block;
+    overflow: hidden;
+    height: 49px;
+    background-clip: padding-box;
+    background-color: #F5F5F5;
+    color: #383838;
+    letter-spacing: .04em;
+    text-decoration: none;
+    white-space: nowrap;
+    font-size: 17px;
+    line-height: 49px;
+    border-radius: 3px;
+    padding: 0 0 0 18px;
+}
+.select2-container .select2-choice .select2-arrow {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block;
+    width: 49px;
+    height: 100%;
+    text-align: center;
+    background: #F5F5F5 none;
+    border-left: 0;
+}
+
+.select2-container .select2-choice .select2-arrow b {
+    background: url(../images/select-arrow.png);
+    display: inline-block;
+    vertical-align: middle;
+    width: 11px;
+    height: 6px;
+    position: relative;
+    opacity: .3;
+}
+
+.select2-container.select2-container-disabled .select2-choice {
+    border: 0;
+}

@@ -53,6 +53,18 @@
     margin-top: 25px;
 }
 
+.modal h2,
+.modal div.icon
+{color: #fff;}
+
+.modal p a {
+    color: #fff;
+}
+
+.modal p a:hover {
+    color: #e7543d;
+}
+
 @media (max-width: 767px) {
     .bill-cards-modal .bill-cards-container .col-sm-6 {
         margin-bottom: 25px;

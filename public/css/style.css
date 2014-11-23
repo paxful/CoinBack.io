@@ -262,7 +262,7 @@ body {
 }
 
 .wrapper{
-    border-bottom: 37px solid #F1F1F1;
+    border-bottom: none;
     padding-bottom: 15px;
 }
 

@@ -4,7 +4,7 @@
 @parent
 {{ HTML::style('/css/intlTelInput.css') }}
 {{ HTML::style('/plugins/select2/select2.css') }}
-{{ HTML::style('/plugins/select2/select2-custom.css') }}
+{{ HTML::style('/css/select2-custom.css') }}
 @stop
 
 @section('content')

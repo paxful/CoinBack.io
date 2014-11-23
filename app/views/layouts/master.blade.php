@@ -18,7 +18,7 @@
 <!-- HEADER -->
 <header class="header container">
     <div class="col-xs-3">
-        <a href="{{URL::to('/')}}" class="logo">CoinBack</a>
+        <a href="{{URL::to('/')}}" class="logo">CoinBack</a><br />
         <span>project by <a href="https://easybitz.com">easybitz.com</a></span>
     </div>
     <div class="col-xs-9">
@@ -99,7 +99,7 @@
             <address>
                 <p>+718 790 3303<br>
                 <a href="mailto:info@easybitz.com">email us</a></p>
-                <p>Made with Love in Las Vegas</p>
+                <p>Made with <i class="fa fa-heart fa-inverse"></i> in Las Vegas</p>
                 <p>This project is Open Source. <a href="https://github.com/skyzer/coinback.io">Github link <i class="fa fa-github"></i></a></p>
             </address>
         </div>
