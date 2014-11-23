@@ -9,6 +9,10 @@
         "barryvdh/laravel-debugbar": "1.*",
         "raahul/larryfour": "1.*"
 	},
+    "require-dev": {
+        "phpunit/phpunit": "4.3.*",
+        "doctrine/dbal": "2.*"
+    },
 	"autoload": {
 		"classmap": [
 			"app/commands",
