@@ -11,7 +11,7 @@
     <!-- .page-header -->
     <header class="page-header container text-center" style="margin-bottom:0;">
         <div class="col-sm-10 col-sm-offset-1">
-            <h1>{{trans('home.welcome_title')}}</h1>
+            <h1>{{trans('web.welcome_title')}}</h1>
         </div>
     </header>
     <!-- /.page-header -->
@@ -181,4 +181,5 @@
 {{ HTML::script('js/intlTelInput.min.js'); }}
 {{ HTML::script('plugins/select2/select2.min.js'); }}
 {{ HTML::script('js/custom.js'); }}
+{{ HTML::script('js/locationHelper.js'); }}
 @stop

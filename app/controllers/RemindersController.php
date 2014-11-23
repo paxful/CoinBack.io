@@ -38,7 +38,7 @@ class RemindersController extends BaseController {
 	 */
 	public function getReset($token = null)
 	{
-		if (is_null($token)) return Redirect::to('merchant')->with('flash_warning', 'Token not specified');
+		if (is_null($token)) return Redirect::to('/#merchantRegister')->with('flash_warning', 'Token not specified');
 
 		return View::make('password.reset')->with('token', $token);
 	}
@@ -69,7 +69,7 @@ class RemindersController extends BaseController {
 				return Redirect::back()->with('flash_warning', Lang::get($response));
 
 			case Password::PASSWORD_RESET:
-				return Redirect::to('merchant')->with('flash_info', 'New password set successfully.');
+				return Redirect::to('/')->with('password_reset', '<div class="alert alert-info" role="alert">'.trans('web.password_reset_success').'</div>');
 		}
 	}
 

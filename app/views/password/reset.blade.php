@@ -4,62 +4,64 @@
 @parent
 @stop
 
-@section('navigation')
-
-@stop
-
 @section('content')
+    <!-- .page-header -->
+    <header class="page-header container text-center" style="margin-bottom:0;">
+        <div class="col-sm-10 col-sm-offset-1">
+            <h1>{{trans('web.submit_new_password')}}</h1>
+        </div>
+    </header>
+    <!-- /.page-header -->
 
-<div class="gap-40"></div>
+   <!-- CONTAINER -->
+    <article class="container text-center">
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="row">
+                <div class="col-sm-9 col-sm-offset-3">@include('session-message')</div>
+            </div>
+            <form action="{{ action('RemindersController@postReset') }}" class="form-horizontal" role="form" method="POST">
+                <input type="hidden" name="token" value="{{ $token }}">
 
-<section id="features">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
-                <h1 class="text-right">Submit your new password</h1>
-                <div class="row">
-                    <div class="col-xs-12">
-                        @include('session-message')
-                        <form action="{{ action('RemindersController@postReset') }}" class="form-horizontal" role="form" method="POST">
-                            <input type="hidden" name="token" value="{{ $token }}">
-
-                            <div class="form-group">
-                                <label for="email" class="col-sm-3 control-label">Email</label>
-                                <div class="col-sm-9">
-                                    <input type="email" name="email" class="form-control">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="email" class="col-sm-3 control-label">Password</label>
-                                <div class="col-sm-9">
-                                    <input type="password" name="password" class="form-control">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="email" class="col-sm-3 control-label">Confirm password</label>
-                                <div class="col-sm-9">
-                                    <input type="password" name="password_confirmation" class="form-control">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-9 col-sm-offset-3">
-                                    <input class="btn btn-primary btn-lg btn-block" type="submit" value="Reset Password">
-                                </div>
-                            </div>
-                        </form>
+                <div class="form-group">
+                    <label for="email" class="col-sm-3 control-label">{{trans('web.email')}}</label>
+                    <div class="col-sm-9">
+                        <input type="email" name="email" class="form-control">
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
 
+                <div class="form-group">
+                    <label for="email" class="col-sm-3 control-label">{{trans('web.password')}}</label>
+                    <div class="col-sm-9">
+                        <input type="password" name="password" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="col-sm-3 control-label">{{trans('web.confirm_password')}}</label>
+                    <div class="col-sm-9">
+                        <input type="password" name="password_confirmation" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-9 col-sm-offset-3">
+                        <button class="btn btn-default btn-lg btn-block ladda-button" data-style="zoom-in" type="submit">
+                            <span class="ladda-label">{{trans('web.reset_password')}}</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </article>
+    <!-- /.container -->
 @stop
+
 @section('footer-includes')
-@stop
+@parent
+{{ HTML::script('js/custom.js'); }}
 <script type="text/javascript">
-    $( 'input[type=submit]' ).ladda( 'bind' );
+    $(document).ready(function() {
+        $('button[type=submit]').ladda('bind');
+    });
 </script>
+@stop

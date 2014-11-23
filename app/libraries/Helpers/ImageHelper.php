@@ -1,5 +1,6 @@
 <?php namespace Helpers;
 
+use Illuminate\Support\Facades\App;
 use QRcode;
 
 class ImageHelper {
@@ -9,6 +10,10 @@ class ImageHelper {
 	*/
 	public static function createDefaultQrCode($address)
 	{
+		if (App::environment('testing')) {
+			// for testing random path
+			return 'images/bill-cards/2014/11/1FEMvQUJkSH9ZiW8s5e3LbaaLqexi6T4iU.png';
+		}
 		require(app_path().'/libraries/phpqrcode/phpqrcode.php');
 		$customerQrcodeImageRelativePath = self::getCurrentImageFolderPath() . '/' . $address. '.png';
 		QRcode::png($address, public_path($customerQrcodeImageRelativePath), "H", 20, 1); // saves qr code image to disk

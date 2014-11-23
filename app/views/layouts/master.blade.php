@@ -69,8 +69,8 @@
                 <div class="col-md-6 col-sm-8 col-md-offset-3 col-sm-offset-2 bill-cards-container">
                     <div class="icon" data-icon="Z"></div>
                     <h2>login</h2>
-                    <div id="login-modal-form-message"></div>
                     {{ Form::open(array('url' => 'home/login', 'role' => 'form', 'id' => 'loginForm')); }}
+                        <div id="login-modal-form-message">@if (Session::has('password_reset')) {{Session::get('password_reset')}} @endif</div>
                         <div class="form-group">
                             <input name="loginEmail" id="loginEmail" class="form-control text-center" type="text" placeholder="Email">
                         </div>
@@ -80,7 +80,7 @@
                         <button id="btn-login-modal" class="btn btn-default btn-block ladda-button" data-style="zoom-in" type="submit">
                             <span class="ladda-label">Log in</span>
                         </button>
-                        <p class="form-control-static"><a href="#" data-toggle="modal" data-dismiss="modal" data-target="#forgotModal">{{trans('home.lost_password')}}</a></p>
+                        <p class="form-control-static"><a href="#" data-toggle="modal" data-dismiss="modal" data-target="#forgotModal">{{trans('web.lost_password')}}</a></p>
                     {{Form::close()}}
                 </div>
             </article>
@@ -95,13 +95,13 @@
                 <div class="col-md-6 col-sm-8 col-md-offset-3 col-sm-offset-2 bill-cards-container">
                     <div class="icon" data-icon="Z"></div>
                     <h2>forgot password</h2>
-                    <div id="reminder-modal-form-message"></div>
                     <form action="{{ action('RemindersController@postRemind') }}" id="resetForm" role="form" method="POST">
+                        <div id="reminder-modal-form-message"></div>
                         <div class="form-group">
                             {{ Form::label('forgotPassEmail', 'Email', array('class' => 'sr-only'))}}
                             {{ Form::email('forgotPassEmail', null, array('class' => 'form-control', 'id' => 'forgotPassEmail', 'placeholder' => 'Email')) }}
                         </div>
-                        <button id="btn-reset-pass-modal" class="btn btn-primary btn-lg btn-block ladda-button" data-style="zoom-in" type="submit">
+                        <button id="btn-reset-pass-modal" class="btn btn-default btn-block ladda-button" data-style="zoom-in" type="submit">
                             <span class="ladda-label">Get Password</span>
                         </button>
                         <p><a href="#" data-toggle="modal" data-dismiss="modal" data-target="#loginModal">Login</a></p>
@@ -164,9 +164,9 @@
 @show
 @if(!Auth::check())
     <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function()
+    {
         var loginBtn = $( '#btn-login-modal' );
-
         loginBtn.click(function(e) {
             e.preventDefault();
 
@@ -190,8 +190,36 @@
                 }
             }, 'json');
         });
+
+        var btnResetPass = $('#btn-reset-pass-modal');
+        btnResetPass.click(function(e) {
+            e.preventDefault();
+
+            btnResetPass.ladda();
+            btnResetPass.ladda('start');
+
+            var resetForm = $('#resetForm');
+            var forgotPassEmail = resetForm.find( "#forgotPassEmail" ).val();
+            $.post(resetForm.attr('action'), { forgotPassEmail: forgotPassEmail}).done(function( data ) {
+                if (data.status == 'success') {
+                    resetForm.find("#reminder-modal-form-message").removeClass().addClass('alert alert-success').html(data.message);
+                } else {
+                    resetForm.find("#reminder-modal-form-message").removeClass().addClass('alert alert-warning').html(data.message);
+                }
+                btnResetPass.ladda('stop');
+            }, 'json')
+                .fail(function() {
+                resetForm.find("#reminder-modal-form-message").removeClass().addClass('alert alert-warning').html('<p>Unknown error</p>');
+                btnResetPass.ladda('stop');
+            });
+        });
     });
     </script>
+    @if(Session::has('password_reset'))
+        <script type="text/javascript">
+            $('#loginModal').modal('show');
+        </script>
+    @endif
 @endif
 </body>
 </html>

@@ -85,7 +85,7 @@ require app_path().'/config/constants.php';
 
 Validator::extend('email_ignore_case', function($attribute, $value, $parameters)
 {
-	// ilike is postgresql specific
-	$users = User::where('email', 'ilike', $value)->get();
+	$likeSyntax = Config::get('database.default') == 'sqlite' ? 'like' : 'ilike'; // ilike is postgresql specific, case insensitive comparison
+	$users = User::where('email', $likeSyntax, $value)->get();
 	return count($users) ? false : true;
 });

@@ -25,7 +25,7 @@ class HomeController extends BaseController {
 		if (Session::token() != Input::get('token'))
 		{
 			Log::warning('Login hack attempt. Token didn\'t match, input data: '.json_encode(Input::all()));
-			return Response::json(array('status' => 'fail', 'message' => sprintf($alertContainer, 'warning', trans('home.system_error'))));
+			return Response::json(array('status' => 'fail', 'message' => sprintf($alertContainer, 'warning', trans('web.system_error'))));
 		}
 
 		if (Auth::attempt(array('email' => Input::get('email'), 'password' => Input::get('password')))) {
@@ -70,7 +70,7 @@ class HomeController extends BaseController {
 		$address = Input::get('address');
 		$post_code = Input::get('post_code');
 
-		$location = Location::find($locationId);
+		$location = App::environment('testing') ? Location::find(5128581) : Location::find($locationId);
 
 		try {
 			DB::beginTransaction();

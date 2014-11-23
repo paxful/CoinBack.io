@@ -7,7 +7,7 @@ class AddColumnsToTransactions extends Migration {
 	public function up()
 	{
 		Schema::table('transactions', function($table) {
-			$table->decimal('bitcoin_current_rate_usd', 7, 2);
+			$table->decimal('bitcoin_current_rate_usd', 7, 2)->default(0);
 			$table->bigInteger('remaining_bitcoin')->default(0)->nullable();
 			$table->boolean('sold')->unsigned()->default(0);
 		});
