@@ -85,7 +85,7 @@
             this.history = $('.history');
             this.audio = $('audio');
             this.num = $('[data-num]');
-            this.select = $('select');
+            this.select = $('chosen-select');
             this.scrTop = $('.scrolltop');
             this.mask = $('.mask');
             this.map = $('#map');
@@ -654,13 +654,10 @@ countryDropdown.select2({
         });
 
         $("#location_id").val(location.id);
-        $("#country_chosen").remove();
         // load the state for that location
         populateStates(location.country_id, location);
-        $("#country_chosen").remove();
         // load cities for that location
         populateCities(location.subdivision_iso_code, location.country_id, location, "Select...");
-        $("#country_chosen").remove();
     }, "json");
 
 })(jQuery);
@@ -709,7 +706,6 @@ function populateStates(country_id, location)
 
 function populateCities(state_iso_code, country_id, location, placeholder)
 {
-    $("#country_chosen").remove();
     $.post(basePath + '/home/cities-list', {state: state_iso_code, country_id: country_id}).done(function (data) {
         var cities = [];
         $.each(data, function(id, object) {
@@ -728,5 +724,4 @@ function populateCities(state_iso_code, country_id, location, placeholder)
             cityDropdown.select2("val", location.id);
         }
     }, 'json');
-    $("#country_chosen").remove();
 }

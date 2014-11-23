@@ -64,14 +64,14 @@
                 <h3>— Merchant sign up —</h3>
                 @include('session-message')
                 @if ( $errors->count() > 0 )
-                <div class="alert alert-warning">
-                    <p>The following errors have occurred:</p>
-                    <ul>
-                        @foreach( $errors->all() as $message )
-                        <li>{{{ $message }}}</li>
-                        @endforeach
-                    </ul>
-                </div>
+                    <div class="alert alert-warning">
+                        <p>The following errors have occurred:</p>
+                        <ul>
+                            @foreach( $errors->all() as $message )
+                            <li>{{{ $message }}}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 @endif
                 {{ Form::open(array('url' => 'home/register', 'role' => 'form', 'id' => 'registerForm')); }}
                     <div class="form-group">
