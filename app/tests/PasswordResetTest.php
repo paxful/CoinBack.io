@@ -54,7 +54,7 @@ class PasswordResetTest extends TestCase {
 		Session::start(); // used for csrf token
 		$crawler = $this->client->request('GET', '/password/reset/140ffb19148f701b08e79d210010ffee9414fa4e');
 		$this->assertTrue($this->client->getResponse()->isOk());
-		$this->assertCount(1, $crawler->filter('h1:contains("Submit your new password")'));
+		$this->assertCount(1, $crawler->filter('h1:contains("'.trans('web.submit_new_password').'")'));
 
 		/* submit new password */
 		$input = [
