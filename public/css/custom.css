@@ -74,8 +74,28 @@
     margin-bottom: 10px;
 }
 
+.calculatorContainer {
+    margin-right: 0;
+}
+.currentExchangeRateContainer {position: relative;}
+.rateAjaxLoader {
+    position: absolute;
+    top: 22%;
+    display: none;
+}
+.btn.btn-xs {
+    height: 34px;
+    line-height: 30px;
+    padding: 0 6px;
+    font-size: 14px;
+}
+
 @media (max-width: 767px) {
     .bill-cards-modal .bill-cards-container .col-sm-6 {
         margin-bottom: 25px;
+    }
+    .calculatorInputs {
+        margin-left: 25px;
+        margin-right: 25px;
     }
 }

@@ -15,4 +15,8 @@ class BaseController extends Controller {
 		}
 	}
 
+	public function getBitcoinPrice() {
+		return ApiHelper::getBitcoinPrice();
+	}
+
 }

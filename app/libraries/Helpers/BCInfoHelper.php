@@ -21,6 +21,9 @@ class BCInfoHelper {
 	}
 
 	public static function sendPayment($guid, $pass, $to, $amountSatoshis, $from) {
+		if (App::environment('testing')) {
+			return '*ok*';
+		}
 		$fullUrl = self::$MERCHANT_URL.$guid.'/payment?password='.$pass.'&to='.$to.'&amount='.$amountSatoshis.'&from='.$from;
 		$response = file_get_contents($fullUrl);
 		$respJson = json_decode($response);

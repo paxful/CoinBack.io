@@ -10,7 +10,6 @@ class ChainComHelper {
 			// random chain.com response for unit testing
 			return json_encode(array(
 				'id' => 'f69d69d5-d46b-41d5-8ac7-e50bfe0b44b1',
-				'notification_id' => 'f69d69d5-d46b-41d5-8ac7-e50bfe0b44b1',
 				'url' => 'http://www.bigbooties.com',
 				'address' => '1FEMvQUJkSH9ZiW8s5e3LbaaLqexi6T4iU',
 			));

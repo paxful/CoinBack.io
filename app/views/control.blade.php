@@ -4,11 +4,8 @@
 @parent
 {{ HTML::style('/css/intlTelInput.css') }}
 {{ HTML::style('/plugins/select2/select2.css') }}
-{{ HTML::style('/plugins/select2/select2-custom.css') }}
+{{ HTML::style('/css/select2-custom.css') }}
 {{ HTML::style('/css/jquery.nouislider.min.css') }}
-<script type="text/javascript">
-    var currencyRate = <?php echo ApiHelper::getBitcoinPrice(); ?>;
-</script>
 @stop
 
 @section('content')
@@ -50,11 +47,11 @@
     <article class="container text-center inforow bg-info">
         <div class="row bg-info">
             <div class="col-md-3 col-sm-6">
-                <div class="countup-skip">${{Auth::user()->average_rate}}</div>
+                <div class="countup-skip">$<span id="merchantAverage">{{Auth::user()->average_rate}}</span></div>
                 <h6>Your Bitcoin Average</h6>
             </div>
             <div class="col-md-3 col-sm-6">
-                <div class="countup-skip">${{ApiHelper::getBitcoinPrice()}}</div>
+                <div class="countup-skip currentExchangeRateContainer">$<span id="currentExchangeRate">{{ApiHelper::getBitcoinPrice()}}</span><img class="rateAjaxLoader" src="{{URL::to('images/ajax_loader_big.gif');}}" /></div>
                 <h6>Current market price</h6>
             </div>
             <div class="col-md-3 col-sm-6">
@@ -69,68 +66,72 @@
         <div class="row bg-info selling-container">
         <h3 class="text-center">— Sell —</h3>
             {{ Form::open(array('url' => 'control/send-payment', 'class' => 'form-horizontal', 'id' => 'sendBitcoinsForm', 'role' => 'form')) }}
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">Bitcoin</label>
-                        <div class="col-xs-6">
-                            <input name="amountBTC" id="amountBTC" class="form-control" type="number" placeholder="0" step="0.00000001">
+                <div class="row calculatorContainer">
+                    <div class="col-sm-6 calculatorInputs">
+                        <div class="form-group amountBTC-container">
+                            <label class="col-xs-4 control-label">Bitcoin</label>
+                            <div class="col-xs-6">
+                                {{ Form::number('amountBTC', null, array('class' => 'form-control', 'id' => 'amountBTC', 'placeholder' => '0', 'step' => '0.00000001')) }}
+                            </div>
+                            <div class="col-xs-2"><a id="btn-max-btc" href="#" class="btn btn-info btn-xs">MAX</a></div>
+                        </div>
+                        <div class="form-group amountCurrency-container">
+                            <label class="col-xs-4 control-label">USD Amount</label>
+                            <div class="col-xs-6">
+                                {{ Form::number('amountCurrency', null, array('class' => 'form-control', 'id' => 'amountCurrency', 'step' => '0.01', 'placeholder' => '0')) }}
+                            </div>
+                            <div class="col-xs-2">&nbsp;</div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-5">
+                                <span>Premium</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-2" id="premium"></div><div class="col-sm-2"><input name="premiumInput" id="premiumInput"></div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">USD Amount</label>
-                        <div class="col-xs-6">
-                            <input name="amountCurrency" id="amountCurrency" class="form-control" type="number" step="0.01" placeholder="0">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-xs-5">
-                            <span>Premium</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-8 col-sm-offset-2" id="premium"></div><div class="col-sm-2"><input id="premiumInput"></div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <table class="table cart-total">
-                        <tbody>
-                            <tr>
-                                <th>Sale Exchange Rate</th>
-                                <td class="text-primary text-left">$ <span id="saleExchangeRate">{{ApiHelper::getBitcoinPrice()}}</span></td>
-                            </tr>
-                            <tr>
-                                <th>Fee 1%</th>
-                                <td class="text-primary text-left">$ <span id="fee">0</span></td>
-                            </tr>
-                            <tr>
-                                <th>Your profit</th>
-                                <td class="text-primary text-left"><strong>$ <span id="merchantProfit">0</span></strong></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="jumbotron collect-info">
+                    <div class="col-sm-6">
                         <table class="table cart-total">
                             <tbody>
                                 <tr>
-                                    <th>Collect</th>
-                                    <td class="text-primary text-left">$ <span id="toCollect">0</span></td>
+                                    <th>Final Exchange Rate</th>
+                                    <td class="text-primary text-left">$ <span id="finalExchangeRate">{{ApiHelper::getBitcoinPrice()}}</span></td>
                                 </tr>
                                 <tr>
-                                    <th>To Send</th>
-                                    <td class="text-primary text-left"><span id="toSendBtc">0</span> BTC</td>
+                                    <th>Fee 1%</th>
+                                    <td class="text-primary text-left"><span id="fee">0</span> BTC</td>
+                                </tr>
+                                <tr>
+                                    <th>Your profit</th>
+                                    <td class="text-primary text-left"><strong>$ <span id="merchantProfit">0</span></strong></td>
                                 </tr>
                             </tbody>
                         </table>
+                        <div class="jumbotron collect-info">
+                            <table class="table cart-total">
+                                <tbody>
+                                    <tr>
+                                        <th>Collect</th>
+                                        <td class="text-primary text-left">$ <span id="toCollect">0</span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>To Send</th>
+                                        <td class="text-primary text-left"><span id="toSendBtc">0</span> BTC</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <a href="" class="btn btn-info col-sm-11 disabled">Scan</a>
                 </div>
                 <div class="col-sm-4">
-                    <input class="form-control col-xs-10 col-sm-offset-1" type="text" placeholder="Bitcoin Address" disabled>
+                    {{ Form::text('bitcoinAddress', null, array('class' => 'form-control col-xs-10 col-sm-offset-1', 'id' => 'bitcoinAddress', 'placeholder' => 'bitcoin address')) }}
                 </div>
                 <div class="col-sm-4">
-                    <input class="form-control col-xs-10 col-sm-offset-1" name="email" id="emai" type="email" placeholder="Email">
+                    {{ Form::email('bitcoinAddress', null, array('class' => 'form-control col-xs-10 col-sm-offset-1', 'id' => 'email', 'placeholder' => 'email')) }}
                 </div>
                 <div class="col-xs-12 send-payment-btn-container">
                     <button id="send-payment-btn" type="submit" class="btn btn-success col-sm-6 col-sm-offset-3" onclick="return confirm('Confirm send out bitcoins?');">Confirm & Send</button>

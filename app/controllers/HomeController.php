@@ -13,10 +13,7 @@ class HomeController extends BaseController {
 			return Country::orderBy('sort_id', 'desc')->lists('name', 'id');
 		});
 
-		$data = array(
-			'country' => $countries
-		);
-		return View::make('index', $data);
+		return View::make('index', array('country' => $countries));
 	}
 
 	public function postLogin()
@@ -97,6 +94,7 @@ class HomeController extends BaseController {
 				'qr_code_path' => $qrCodePath
 			));
 
+			/* create listener for that address. whenever this address receives payment, our system is notified */
 			$chainComJsonResponse = json_decode(ChainComHelper::createAddressNotification($newWallet->address));
 
 			// if notification created
@@ -110,6 +108,7 @@ class HomeController extends BaseController {
 			} else {
 				// otherwise create later manually, don't let new user mess with his experience and let him proceed
 				Log::error('Notification for new merchant ('.$email.') was not created for following address: '.$newWallet->address);
+				MailHelper::sendAdminWarningEmail('Failed to create notification for merchant', "Merchant ($email), address: " . $newWallet->address);
 			}
 
 			DB::commit();
@@ -133,7 +132,7 @@ class HomeController extends BaseController {
 			Log::error("Merchant registration failed. " . $e->getMessage());
 			Log::error($e);
 //			ApiHelper::sendSMStoAdmins('RuntimeException! Merchant registration does not work!');
-//			MailHelper::sendAdminWarningEmail('RuntimeException! Merchant registration does not work!', "Error: ".$e);
+			MailHelper::sendAdminWarningEmail('Merchant registration does not work!', "Error: ".$e);
 			return Redirect::to('/#merchantRegister')
 			               ->with('flash_danger', 'Error creating new account. Administrator has been notified')
 			               ->withInput();
@@ -143,7 +142,7 @@ class HomeController extends BaseController {
 	public function postLocationByIp()
 	{
 		// local env gives 127.0.0.1 so its not in locations table
-		$ip_address = App::environment('local') ? '69.162.16.13' : Request::getClientIp();
+		$ip_address = App::environment('local', 'testing') ? '69.162.16.13' : Request::getClientIp();
 
 		$location = Location::getUserLocationByIp($ip_address);
 		if (count($location))
@@ -153,10 +152,7 @@ class HomeController extends BaseController {
 				'location' => $location->toJson()
 			));
 		}
-		else
-		{
-			return Response::json(array('status' => 'fail'));
-		}
+		return Response::json(array('status' => 'fail'));
 	}
 
 	public function postCountriesList()

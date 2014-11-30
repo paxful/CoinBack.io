@@ -18,6 +18,7 @@ class ProcessController extends BaseController {
 
 		$transactionModel = Transaction::getTransactionByHash($payload['transaction_hash']);
 
+		/* transaction exists, only updated confirmations number */
 		if (count($transactionModel)):
 			Log::info('Updated transaction: '.$transactionModel->transaction_hash.', confirms: '.$transactionModel->confirms);
 			Transaction::updateConfirmations($transactionModel, $confirms);
@@ -31,40 +32,27 @@ class ProcessController extends BaseController {
 
 		$chainNotification = LogNotification::where('notification_id', $result['notification_id'])->first();
 
-		Transaction::create(array(
-			'user_id' => $chainNotification->user_id,
-			'type' => 'received',
-			'bitcoin_amount' => $receivedSatoshis,
-			'fiat_amount' => $fiat_amount,
-			'fiat_currency_id' => 144,
-			'transaction_hash' => $payload['transaction_hash'],
-			'confirms' => $confirms,
-			'bitcoin_current_rate_usd' => $bitcoinCurrentPrice,
-			'remaining_bitcoin' => $receivedSatoshis
-		));
+		$newTransaction = new Transaction();
+		$newTransaction->user_id                    = $chainNotification->user_id;
+		$newTransaction->type                       = 'received';
+		$newTransaction->bitcoin_amount             = $receivedSatoshis;
+		$newTransaction->remaining_bitcoin          = $receivedSatoshis;
+		$newTransaction->fiat_amount                = $fiat_amount;
+		$newTransaction->fiat_currency_id           = 144;
+		$newTransaction->transaction_hash           = $payload['transaction_hash'];
+		$newTransaction->confirms                   = $confirms;
+		$newTransaction->bitcoin_current_rate_usd   = $bitcoinCurrentPrice;
 
 		/* get new average price */
-		$transactions = Transaction::allUnspent($chainNotification->user_id);
-		$totalAvgBitcoinPrice = 0;
-		$totalBitcoins = 0;
-		foreach ($transactions as $t) {
-			$transactionBitcoins = BitcoinHelper::satoshiToBtc($t->remaining_bitcoin);
-			$totalBitcoins = bcadd($totalBitcoins, $transactionBitcoins, 8);
-			$transactionAvgBitcoinPrice = bcmul($transactionBitcoins, $t->bitcoin_current_rate_usd, 2);
-			$totalAvgBitcoinPrice = bcadd($totalAvgBitcoinPrice, $transactionAvgBitcoinPrice, 2);
-			if (count($transactions) == 1) {
-				$totalAvgBitcoinPrice = $t->bitcoin_current_rate_usd;
-				$totalBitcoins = 1;
-				continue;
-			}
-		}
-		$newAveragePrice = bcdiv($totalAvgBitcoinPrice, $totalBitcoins, 2);
+		$newTransaction = $this->calculateNewAverageOnReceive($newTransaction, $chainNotification->user_id);
+		$newTransaction->save();
 
 		/* update user with new average price */
 		$user = User::find($chainNotification->user_id);
-		$user->average_rate = $newAveragePrice;
+		$user->average_rate = $newTransaction->new_average;
 		$user->bitcoin_balance = bcadd($user->bitcoin_balance, $receivedSatoshis);
 		$user->bitcoin_num_transactions = $user->bitcoin_num_transactions + 1;
+		$user->fiat_total = bcadd($user->fiat_total, $fiat_amount, 2);
 
 		$user->save();
 
@@ -73,6 +61,27 @@ class ProcessController extends BaseController {
 		ApiHelper::sendSms($user->phone, $_ENV['PLIVO_NUMBER'], "You received $fiat_amount USD. CoinBack.io");
 
 		return '*ok*';
+	}
+
+	private function calculateNewAverageOnReceive($newTransaction, $userId) {
+		$lastIncomingTransaction = Transaction::lastIncomingUnspent($userId); // where still is remaining bitcoin and not sold
+
+		if (!count($lastIncomingTransaction)) {
+			// if no other incoming transactions with available bitcoins found, just calculate and save balance + average
+			$newTransaction->bitcoin_balance = $newTransaction->remaining_bitcoin;
+			$newTransaction->fiat_balance = $newTransaction->fiat_amount;
+			$newTransaction->new_average = $newTransaction->fiat_amount;
+			return $newTransaction;
+		}
+		$newCryptoBalance = bcadd($lastIncomingTransaction->bitcoin_balance, $newTransaction->remaining_bitcoin); // in satoshis
+		$newFiatBalance = bcadd($lastIncomingTransaction->fiat_balance, $newTransaction->fiat_amount, 2);
+		$newTransaction->bitcoin_balance = $newCryptoBalance;
+		$newTransaction->fiat_balance = $newFiatBalance;
+
+		$newBtcBalance = BitcoinHelper::satoshiToBtc($newCryptoBalance);
+		$newAverage = bcdiv($newFiatBalance, $newBtcBalance, 2);
+		$newTransaction->new_average = $newAverage;
+		return $newTransaction;
 	}
 
 	private function fiatAmount($fiat_currency_rate_USD, $value_satoshi, $crypto_current_rate_usd) {

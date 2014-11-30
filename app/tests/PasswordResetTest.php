@@ -1,5 +1,7 @@
 <?php
 
+use Helpers\ApiHelper;
+
 class PasswordResetTest extends TestCase {
 
 	public function testPasswordReset()
@@ -68,5 +70,4 @@ class PasswordResetTest extends TestCase {
 		$this->action('POST', 'RemindersController@postReset', null, $input);
 		$this->assertSessionHas('password_reset');
 	}
-
 }

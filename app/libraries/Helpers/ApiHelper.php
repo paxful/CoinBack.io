@@ -8,7 +8,12 @@ use RestAPI;
 
 class ApiHelper {
 
+	public static $stubBtcPrice = 300; // needed for unit testing, to keep it simple for every1, no reason of doing reflections or mocking
+
 	public static function getBitcoinPrice() {
+		if (App::environment('testing')) {
+			return self::$stubBtcPrice;
+		}
 		return self::getBitstampTicker()->bid;
 	}
 
@@ -63,9 +68,9 @@ class ApiHelper {
 
 	public static function sendSMStoAdmins($text)
 	{
-		if (!App::environment('local'))
+		if (!App::environment('local', 'testing'))
 		{
-			$admin_phones = Settings::getSettingValue('admin_phones'); // single text, comma separated
+			$admin_phones = $_ENV['ADMIN_PHONES']; // single text, comma separated
 			$admin_phones_arr = explode(",", $admin_phones);
 			$our_number = Config::get('services.plivo.number');
 			self::sendSMS($admin_phones_arr, $our_number, App::environment().': '.$text);

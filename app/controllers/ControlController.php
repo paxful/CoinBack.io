@@ -1,116 +1,109 @@
 <?php
 
+use Illuminate\Auth\AuthManager;
+use Illuminate\Support\Facades\Redirect;
+
 class ControlController extends BaseController {
 
 	protected $layout = 'layouts.master';
+	protected $user;
+	protected $auth;
 
-	public function __construct()
+	/* some simple inject for unit testing purposes */
+	public function __construct(AuthManager $auth)
 	{
 		$this->beforeFilter('auth');
+		$this->auth = $auth;
+		$this->user = $auth->user();
 	}
 
 	public function getIndex()
 	{
-		$transactions = Transaction::where('user_id', Auth::id())->get();
+		$transactions = Transaction::where('user_id', $this->user->id)->get();
 		return View::make('control', array('transactions' => $transactions));
-	}
-
-	public function postRegister()
-	{
-		$rules = array(
-			'business_name' => 'required',
-			'email'    => 'required|email|email_ignore_case',
-			'phone' => 'required'
-		);
-
-		// override default message
-		$message = array(
-			'email_ignore_case' => 'The selected email is already in use.'
-		);
-		$validator = Validator::make(Input::all(), $rules, $message);
-
-		// if the validator fails, redirect back to the form
-		if ($validator->fails()) {
-			return Redirect::to('/')
-               ->withErrors($validator) // send back all errors to the registration form
-               ->withInput(); // send back the input (not the password) so that we can repopulate the form
-		}
-
-		$business_name =  Input::get('business_name');
-		$email = Input::get('email');
-		$ip_address = Request::getClientIp();
-		$password = substr(hash('sha512',rand()),0,12);
-		$phone = Input::get('phone');
-
-		$locationId = Input::get('location_id');
-		$address = Input::get('address');
-		$post_code = Input::get('post_code');
-
-		$location = Location::find($locationId);
-
-		try {
-			DB::beginTransaction();
-
-			$newWallet = json_encode(BCInfoHelper::createNewWallet($password, $email));
-
-			$user = User::create(array(
-				'business_name' => $business_name,
-				'email' => $email,
-				'phone' => $phone,
-				'ip_address' => $ip_address,
-				'password' => Hash::make($password),
-				'location_id' => $locationId,
-				'country_id' => $location->country->id,
-				'address' => $address,
-				'post_code' => $post_code,
-				'bitcoin_address' => $newWallet->address,
-				'bitcoin_address_label' => 'first',
-				'guid' => $newWallet->guid,
-			));
-
-			// TODO qr code path, image
-			// TODO chain.com notification
-
-
-			DB::commit();
-
-			return Redirect::to('control/?registered=1')->with('flash_success', 'You have successfully signed up.');
-		}
-		catch(Exception $e)
-		{
-			DB::rollback();
-			Log::error("Merchant registration failed. " . $e->getMessage());
-			Log::error($e);
-//			ApiHelper::sendSMStoAdmins('RuntimeException! Merchant registration does not work!');
-//			MailHelper::sendAdminWarningEmail('RuntimeException! Merchant registration does not work!', "Error: ".$e);
-			return Redirect::to('/')
-	           ->with('flash_danger', 'Error creating new account. Administrator has been notified')
-	           ->withInput();
-		}
 	}
 
 	public function postSendPayment()
 	{
-		$amountBtc = Input::get('amountBTC');
-		$email = Input::get('email');
-		$amountSatoshi = bcmul($amountBtc, 100000000);
+		$amountBtc      = Input::get('amountBTC');
+		$email          = Input::get('email');
+		$bitcoinAddress = Input::get('bitcoinAddress');
+		$premiumPercentage = intval(Input::get('premiumInput'));
+		$sendAmount     = bcmul($amountBtc, SATOSHI_FRACTION);
 
-		$user = Auth::user();
+		$user = $this->user;
 
-		// validate if merchant has enough balance
-		if ($user->bitcoin_balance < $amountSatoshi) {
-			return Redirect::to('control')->with('flash_error', "Not enough balance");
+		// merchant doesn't have enough balance
+		if ($user->bitcoin_balance < $sendAmount) {
+			return Redirect::to('control')->with('flash_error', 'Not enough balance');
+		}
+
+		// bitcoin address is set but is incorrect
+		if ($bitcoinAddress and !BitcoinHelper::validateBitcoinAddress($bitcoinAddress)) {
+			return Redirect::to('control')->with('flash_error', 'Invalid bitcoin address');
+		}
+
+		// premium input is not integer
+		if ( !is_int($premiumPercentage) ) {
+			return Redirect::to('control')->with('flash_error', 'Invalid premium percentage');
 		}
 
 	    $bitcoinMarketPrice = ApiHelper::getBitcoinPrice(); // get price from backend
 		$amountCurrency = bcmul($amountBtc, $bitcoinMarketPrice, 2);
+
+		// calculate with premium
+		$totalPercentage = bcadd($premiumPercentage, 100);
+		$percentageWithFee = bcadd($totalPercentage, 1);
+		$finalMarketPrice = bcmul($bitcoinMarketPrice, $percentageWithFee/100, 2);
+		$feeFiat = bcmul($finalMarketPrice, 0.9, 2);
+
+		$availableIncomingTransactions = Transaction::availableCoinsForSale($user->id);
+		foreach ($availableIncomingTransactions as $tx) {
+			if ($tx->remaining_bitcoin > $sendAmount) {
+				$tx->remaining_bitcoin = bcsub($tx->remaining_bitcoin, $sendAmount); // set new remaining btc in that transaction
+			} else {
+				$overAmount = bcsub($sendAmount, $tx->remaining_bitcoin);
+			}
+			// TODO recalculate average
+		}
+
+		// calculate profit
+		$user->bitcoin_balance = bcsub($user->bitcoin_balance, $sendAmount); // subtract bitcoin balance
+		$user->total_profit = 0.2; // TODO change
+		$user->save();
+
+		// add transaction row
+		Transaction::create(array(
+			'user_id' => $user->id,
+			'type' => 'sent',
+			'bitcoin_amount' => $sendAmount,
+			'fiat_amount' => $amountCurrency,
+			'fiat_currency_id' => 144,
+			'transaction_hash' => 'xxxxxxxx', // TODO hash
+			'confirms' => 0,
+			'bitcoin_current_rate_usd' => $bitcoinMarketPrice,
+			'remaining_bitcoin' => $sendAmount,
+			'sale_profit' => 0.2 // TODO change
+		));
+
+		// TODO recalculate average price
+		// TODO profit, tax
+
+		if ($bitcoinAddress) {
+
+		} else if ($email) {
+
+		} else {
+
+		}
 
 		// create new wallet for user
 		$password = substr(hash('sha512',rand()),0,12);
 		$newWalletResponse = json_decode(BCInfoHelper::createNewWallet($password, $email));
 		$newGuid = $newWalletResponse->guid;
 
-		BCInfoHelper::sendPayment($user->guid, $user->unhashed_password, $newWalletResponse->address, $amountSatoshi, $user->bitcoin_address);
+		// TODO get response from blockchain.info
+		BCInfoHelper::sendPayment($user->guid, $user->unhashed_password, $newWalletResponse->address, $sendAmount, $user->bitcoin_address);
 
 		$mailData = array(
 			'email' => $email,
@@ -124,39 +117,17 @@ class ControlController extends BaseController {
 
 		MailHelper::sendEmailPlain($mailData);
 
-		// calculate profit
-		$user->bitcoin_balance = bcsub($user->bitcoin_balance, $amountSatoshi); // subtract bitcoin balance
-		$user->total_profit = 0.2; // TODO change
-		$user->save();
-
-		// add transaction row
-		Transaction::create(array(
-			'user_id' => $user->id,
-			'type' => 'sent',
-			'bitcoin_amount' => $amountSatoshi,
-			'fiat_amount' => $amountCurrency,
-			'fiat_currency_id' => 144,
-			'transaction_hash' => 'xxxxxxxx', // TODO hash
-			'confirms' => 0,
-			'bitcoin_current_rate_usd' => $bitcoinMarketPrice,
-			'remaining_bitcoin' => $amountSatoshi,
-			'sale_profit' => 0.2 // TODO change
-		));
-
-		// TODO recalculate average price
-		// TODO profit, tax
-
 		return Redirect::to('control')->with('flash_success', "$amountBtc BTC sent successfully to $email");
 	}
 
 	public function getBillCard()
 	{
-		if (!Auth::check())
+		if (!$this->auth->check())
 		{
 			return Redirect::to('/')->with('flash_warning', 'Please login to view the page.');
 		}
 
-		$billCardPath = ImageHelper::createBillCard(Auth::user()->bitcoin_address, public_path(Auth::user()->qr_code_path), Input::get('type'));
+		$billCardPath = ImageHelper::createBillCard($this->user->bitcoin_address, public_path($this->user->qr_code_path), Input::get('type'));
 
 		if (!$billCardPath) {
 			return Redirect::intended('/')->with('flash_warning','Unknown bill-card chosen');

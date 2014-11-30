@@ -134,10 +134,10 @@
         <div class="col-sm-5">
             <h5>Tools</h5>
             <ul>
-                <li><a href="http://circle.com" target="_blank">Get bitcoin with a debit card <i class="fa fa-external-link"></i></a></li>
-                <li><a href="http://coinbase.com" target="_blank">Get bitcoin with a bank account <i class="fa fa-external-link"></i></a></li>
-                <li><a href="http://blockchain.info" target="_blank">Bitcoin Wallet <i class="fa fa-external-link"></i></a></li>
-                <li><a href="http://easybitz.com" target="_blank">Bitcoin Point of Sale <i class="fa fa-external-link"></i></a></li>
+                <li><a href="http://circle.com" target="_blank">Get bitcoin with a debit card <i class="fa fa-external-link fa-inverse"></i></a></li>
+                <li><a href="http://coinbase.com" target="_blank">Get bitcoin with a bank account <i class="fa fa-external-link fa-inverse"></i></a></li>
+                <li><a href="http://blockchain.info" target="_blank">Bitcoin Wallet <i class="fa fa-external-link fa-inverse"></i></a></li>
+                <li><a href="http://easybitz.com" target="_blank">Bitcoin Point of Sale <i class="fa fa-external-link fa-inverse"></i></a></li>
             </ul>
         </div>
     </div>
