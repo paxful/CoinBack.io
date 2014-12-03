@@ -120,10 +120,7 @@ class HomeController extends BaseController {
 			MailHelper::sendEmailPlain($mailData); // notify merchant via email. redo to queue like in easybitz
 
 			// send to us info about new merchant. redo to queue like in easybitz
-			MailHelper::sendAdminSocialEmail([
-				'subject' => 'New merchant registered',
-				'text' => "New merchant $business_name ($email) signed up"
-			]);
+			MailHelper::sendAdminSocialEmail('New merchant registered', "New merchant $business_name ($email) signed up");
 
 			Auth::login($user);
 
