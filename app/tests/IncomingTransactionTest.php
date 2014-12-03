@@ -11,7 +11,6 @@ class IncomingTransactionTest extends TestCase {
 			'phone' => '1221212121',
 			'ip_address' => '255.255.255.255',
 			'password' => Hash::make('supersecret'),
-			'unhashed_password' => 'supersecret',
 			'location_id' => 5128581,
 			'country_id' => 227,
 			'address' => 'skip',

@@ -26,6 +26,9 @@ class ApiHelper {
 	}
 
 	public static function sendSMS($to, $from, $text) {
+		if (App::environment('local', 'testing')) {
+			return true;
+		}
 
 		require_once app_path().'/libraries/plivo.php';
 

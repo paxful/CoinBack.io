@@ -6,8 +6,6 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 	{
 		parent::setUp();
 
-		$location = Location::find(5128581);
-
 		Artisan::call('migrate');
 		Mail::pretend(true);
 		Schema::create('locations', function($table)
@@ -50,6 +48,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 	public function tearDown()
 	{
 		parent::tearDown();
+		Artisan::call('migrate:reset');
 		Mockery::close();
 	}
 
