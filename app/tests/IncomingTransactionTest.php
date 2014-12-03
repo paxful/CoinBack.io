@@ -18,7 +18,7 @@ class IncomingTransactionTest extends TestCase {
 			'bitcoin_address' => '1FEMvQUJkSH9ZiW8s5e3LbaaLqexi6T4iU',
 			'bitcoin_address_label' => 'first',
 			'guid' => 'ae0aabeb-da48-4e39-a35c-f60056b2c538',
-			'qr_code_path' => 'random/relative/path'
+			'qr_code_path' => 'random/relative/path',
 		]);
 
 		// stub chain.com notification
