@@ -43,12 +43,13 @@ class ProcessController extends BaseController {
 		$newTransaction->confirms                   = $confirms;
 		$newTransaction->bitcoin_current_rate_usd   = $bitcoinCurrentPrice;
 
+		$user = User::find($chainNotification->user_id);
+
 		/* get new average price */
-		$newTransaction = $this->calculateNewAverageOnReceive($newTransaction, $chainNotification->user_id);
+		$newTransaction = $this->calculateNewAverageOnReceive($newTransaction, $user);
 		$newTransaction->save();
 
 		/* update user with new average price */
-		$user = User::find($chainNotification->user_id);
 		$user->average_rate = $newTransaction->new_average;
 		$user->bitcoin_balance = bcadd($user->bitcoin_balance, $receivedSatoshis);
 		$user->bitcoin_num_transactions = $user->bitcoin_num_transactions + 1;
@@ -63,24 +64,22 @@ class ProcessController extends BaseController {
 		return '*ok*';
 	}
 
-	private function calculateNewAverageOnReceive($newTransaction, $userId) {
-		$lastIncomingTransaction = Transaction::lastIncomingUnspent($userId); // where still is remaining bitcoin and not sold
+	private function calculateNewAverageOnReceive($newTransaction, $user) {
 
-		if (!count($lastIncomingTransaction)) {
-			// if no other incoming transactions with available bitcoins found, just calculate and save balance + average
+		if ($user->bitcoin_num_transactions == 0) {
+			// if first bitcoin transaction ever just save balance + average
 			$newTransaction->bitcoin_balance = $newTransaction->remaining_bitcoin;
-			$newTransaction->fiat_balance = $newTransaction->fiat_amount;
-			$newTransaction->new_average = $newTransaction->fiat_amount;
+			$newTransaction->new_average     = $newTransaction->bitcoin_current_rate_usd;
 			return $newTransaction;
 		}
-		$newCryptoBalance = bcadd($lastIncomingTransaction->bitcoin_balance, $newTransaction->remaining_bitcoin); // in satoshis
-		$newFiatBalance = bcadd($lastIncomingTransaction->fiat_balance, $newTransaction->fiat_amount, 2);
-		$newTransaction->bitcoin_balance = $newCryptoBalance;
-		$newTransaction->fiat_balance = $newFiatBalance;
+		$newCryptoBalance   = bcadd($user->bitcoin_balance, $newTransaction->remaining_bitcoin); // in satoshis yo
+		$newFiatBalance     = bcadd($user->fiat_total, $newTransaction->fiat_amount, 2);
+		$newBtcBalance      = BitcoinHelper::satoshiToBtc($newCryptoBalance);
 
-		$newBtcBalance = BitcoinHelper::satoshiToBtc($newCryptoBalance);
-		$newAverage = bcdiv($newFiatBalance, $newBtcBalance, 2);
-		$newTransaction->new_average = $newAverage;
+		$newTransaction->bitcoin_balance = $newCryptoBalance;
+		$newTransaction->fiat_balance    = $newFiatBalance;
+		$newTransaction->new_average     = bcdiv($newFiatBalance, $newBtcBalance, 2);
+
 		return $newTransaction;
 	}
 

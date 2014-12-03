@@ -20,7 +20,7 @@
 <header class="header container">
     <div class="col-xs-3">
         <a href="{{URL::to('/')}}" class="logo">CoinBack</a><br />
-        <span>project by <a target="_blank" href="https://easybitz.com">easybitz.com</a></span>
+        <span style="white-space: nowrap;">project by <a target="_blank" href="https://easybitz.com">easybitz.com</a></span>
     </div>
     <div class="col-xs-9">
         <!-- Mainmenu -->
@@ -35,8 +35,6 @@
                     <li class="cart-list-empty">
                         @if(!Auth::check())
                             <a href="" data-toggle="modal" data-target="#loginModal"><i class="fa fa-sign-in"></i> Login</a>
-                        @else
-                            <a href="{{ URL::to('logout') }}"><i class="fa fa-sign-out"></i> Logout</a>
                         @endif
                     </li>
                 </ul>
@@ -44,8 +42,16 @@
                 <button type="button" class="pclose" data-toggle="collapse" data-target="#navbar-collapse"></button>
                 <ul class="nav navbar-nav pull-right">
                     <li class="current-menu-item">
-                        <a href="#">Home</a>
+                        <a href="{{ URL::to('/') }}">Home</a>
                     </li>
+                    @if(Auth::check())
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#accountModal"><i class="fa fa-user"></i> Account</a>
+                        </li>
+                        <li>
+                            <a href="{{ URL::to('logout') }}"><i class="fa fa-sign-out"></i> Logout</a>
+                        </li>
+                    @endif
                 </ul>
             </div>
         </nav>
@@ -61,56 +67,8 @@
 <!-- /.wrapper -->
 
 @if(!Auth::check())
-<div class="modal fade" id="loginModal">
-    <a href="#" class="pclose" data-dismiss="modal"></a>
-    <div class="divtable">
-        <div class="divcell">
-            <article class="container text-center">
-                <div class="col-md-6 col-sm-8 col-md-offset-3 col-sm-offset-2 bill-cards-container">
-                    <div class="icon" data-icon="Z"></div>
-                    <h2>login</h2>
-                    {{ Form::open(array('url' => 'home/login', 'role' => 'form', 'id' => 'loginForm')); }}
-                        <div id="login-modal-form-message">@if (Session::has('password_reset')) {{Session::get('password_reset')}} @endif</div>
-                        <div class="form-group">
-                            <input name="loginEmail" id="loginEmail" class="form-control text-center" type="text" placeholder="Email">
-                        </div>
-                        <div class="form-group">
-                            <input name="password" id="password" class="form-control text-center" type="password" placeholder="Password">
-                        </div>
-                        <button id="btn-login-modal" class="btn btn-default btn-block ladda-button" data-style="zoom-in" type="submit">
-                            <span class="ladda-label">Log in</span>
-                        </button>
-                        <p class="form-control-static"><a href="#" data-toggle="modal" data-dismiss="modal" data-target="#forgotModal">{{trans('web.lost_password')}}</a></p>
-                    {{Form::close()}}
-                </div>
-            </article>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="forgotModal" tabindex="-1" role="dialog" aria-labelledby="forgot-modal-label" aria-hidden="true">
-    <a href="#" class="pclose" data-dismiss="modal"></a>
-    <div class="divtable">
-        <div class="divcell">
-            <article class="container text-center">
-                <div class="col-md-6 col-sm-8 col-md-offset-3 col-sm-offset-2 bill-cards-container">
-                    <div class="icon" data-icon="Z"></div>
-                    <h2>forgot password</h2>
-                    <form action="{{ action('RemindersController@postRemind') }}" id="resetForm" role="form" method="POST">
-                        <div id="reminder-modal-form-message"></div>
-                        <div class="form-group">
-                            {{ Form::label('forgotPassEmail', 'Email', array('class' => 'sr-only'))}}
-                            {{ Form::email('forgotPassEmail', null, array('class' => 'form-control', 'id' => 'forgotPassEmail', 'placeholder' => 'Email')) }}
-                        </div>
-                        <button id="btn-reset-pass-modal" class="btn btn-default btn-block ladda-button" data-style="zoom-in" type="submit">
-                            <span class="ladda-label">Get Password</span>
-                        </button>
-                        <p><a href="#" data-toggle="modal" data-dismiss="modal" data-target="#loginModal">Login</a></p>
-                    </form>
-                </div>
-            </article>
-        </div>
-    </div>
-</div>
+    @include('modals.login')
+    @include('modals.forgot-password')
 @endif
 
 <!-- FOOTER -->

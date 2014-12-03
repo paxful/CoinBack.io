@@ -68,9 +68,10 @@ class ApiHelper {
 
 	public static function sendSMStoAdmins($text)
 	{
-		if (!App::environment('local', 'testing'))
+		$admin_phones = $_ENV['ADMIN_PHONES']; // single text, comma separated
+		// not local env and adimn phones are actually set
+		if (!App::environment('local', 'testing') or isset($admin_phones))
 		{
-			$admin_phones = $_ENV['ADMIN_PHONES']; // single text, comma separated
 			$admin_phones_arr = explode(",", $admin_phones);
 			$our_number = Config::get('services.plivo.number');
 			self::sendSMS($admin_phones_arr, $our_number, App::environment().': '.$text);

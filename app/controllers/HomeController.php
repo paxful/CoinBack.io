@@ -9,10 +9,7 @@ class HomeController extends BaseController {
 		if (Auth::check()) {
 			return Redirect::to('control');
 		}
-		$countries = Cache::rememberForever('countries', function() {
-			return Country::orderBy('sort_id', 'desc')->lists('name', 'id');
-		});
-
+		$countries = LocationHelper::getCountriesList();
 		return View::make('index', array('country' => $countries));
 	}
 
@@ -57,11 +54,11 @@ class HomeController extends BaseController {
 			               ->withInput(); // send back the input (not the password) so that we can repopulate the form
 		}
 
-		$business_name =  Input::get('business_name');
-		$email = Input::get('email');
-		$ip_address = Request::getClientIp();
-		$password = substr(hash('sha512',rand()),0,12);
-		$phone = Input::get('phone');
+		$business_name  = Input::get('business_name');
+		$email          = Input::get('email');
+		$ip_address     = Request::getClientIp();
+		$password       = substr(hash('sha512',rand()),0,12);
+		$phone          = preg_replace('/\D/', '', Input::get('phone')); // store only numbers
 
 		$locationId = Input::get('location_id');
 		$address = Input::get('address');
@@ -72,9 +69,9 @@ class HomeController extends BaseController {
 		try {
 			DB::beginTransaction();
 
-			$newWallet = json_decode(BCInfoHelper::createNewWallet($password, $email));
+			/* here we must set our internal email so merchant doesn't get email from blockchain.info about wallet */
+			$newWallet = json_decode(BCInfoHelper::createNewWallet($password, $_ENV['MAIL_ADMIN']));
 
-			// TODO qr code path, image
 			$qrCodePath = ImageHelper::createDefaultQrCode($newWallet->address); // create default qr code for user
 
 			$user = User::create(array(
@@ -83,7 +80,7 @@ class HomeController extends BaseController {
 				'phone' => $phone,
 				'ip_address' => $ip_address,
 				'password' => Hash::make($password),
-				'unhashed_password' => $password,
+				'encrypted_password' => Crypt::encrypt($password),
 				'location_id' => $locationId,
 				'country_id' => $location->country->id,
 				'address' => $address,
@@ -113,14 +110,20 @@ class HomeController extends BaseController {
 
 			DB::commit();
 
-			Log::info('New user created');
+			Log::info("New merchant $business_name ($email) signed up");
 
 			$mailData = array(
 				'email' => $email,
 				'subject' => "Welcome to CoinBack.io. Start selling bitcoin today",
 				'text' => "Hello $business_name\n\nWelcome to CoinBack.io\n\nYour password is $password\nEmail: $email\nPhone: $phone\n\nTo get started selling bitcoin you need to have some to sell first."
 			);
-			MailHelper::sendEmailPlain($mailData);
+			MailHelper::sendEmailPlain($mailData); // notify merchant via email. redo to queue like in easybitz
+
+			// send to us info about new merchant. redo to queue like in easybitz
+			MailHelper::sendAdminSocialEmail([
+				'subject' => 'New merchant registered',
+				'text' => "New merchant $business_name ($email) signed up"
+			]);
 
 			Auth::login($user);
 
@@ -131,8 +134,8 @@ class HomeController extends BaseController {
 			DB::rollback();
 			Log::error("Merchant registration failed. " . $e->getMessage());
 			Log::error($e);
-//			ApiHelper::sendSMStoAdmins('RuntimeException! Merchant registration does not work!');
-			MailHelper::sendAdminWarningEmail('Merchant registration does not work!', "Error: ".$e);
+			ApiHelper::sendSMStoAdmins('RuntimeException! Merchant registration does not work!'); // redo to queue
+			MailHelper::sendAdminWarningEmail('Merchant registration does not work!', "Error: ".$e); // redo to queue
 			return Redirect::to('/#merchantRegister')
 			               ->with('flash_danger', 'Error creating new account. Administrator has been notified')
 			               ->withInput();

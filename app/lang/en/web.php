@@ -17,4 +17,8 @@ return array(
 	'reset_password' => 'Reset Password',
 	'password_reset_success' => 'New password set successfully. Login with your new password.',
 
+	/* MERCHANT PAGE*/
+	'location_not_set' => 'City is not set',
+	'account_details_changed' => 'Account details changed.',
+
 );

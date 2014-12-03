@@ -24,4 +24,12 @@ class MailHelper {
 		}
 	}
 
+	public static function sendAdminWarningEmail($subject, $text) {
+		return self::sendEmailPlain(array('text' => App::environment().': '.$text, 'email' => Config::get('mail.admin_email'), 'subject' => App::environment().': '.$subject));
+	}
+
+	public static function sendAdminSocialEmail($subject, $text) {
+		return self::sendEmailPlain(array('text' => App::environment().': '.$text, 'email' => Config::get('mail.admin_email'), 'subject' => App::environment().': '.$subject));
+	}
+
 }

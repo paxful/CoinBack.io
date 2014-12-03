@@ -85,6 +85,32 @@ $(function() {
     });
 
     setInterval(updateBtcPrice, 60000);
+
+    var accountSubmitBtn = $('#btn-account-modal').ladda();
+    accountSubmitBtn.click(function(e) {
+        e.preventDefault();
+        accountSubmitBtn.ladda('start');
+        var form = $('#accountForm');
+        var input = {
+            token: form.find("input[name=_token]").val(),
+            business_name: form.find('#business_name').val(),
+            phone: form.find('#phone').val(),
+            location_id: form.find('#location_id').val(),
+            address: form.find('#address').val(),
+            country_id: form.find('#country').val(),
+            post_code: form.find('#post_code').val(),
+            tax: form.find('#tax').val()
+        };
+        $.post( basePath+"/control/update", input, function( data ) {
+            console.log(data);
+            if (data.status == "success") {
+                form.find('#account-modal-form-message').html(data.message);
+            } else {
+                form.find('#account-modal-form-message').html(data.message);
+            }
+            accountSubmitBtn.ladda('stop');
+        });
+    });
 });
 
 // needed because of the 1% fee
@@ -103,8 +129,8 @@ function calculateSendBtcAmount(fiatAmount) {
 
 function calculateProfit() {
     var btcAveragePrice = merchantAverage*amountBtc.val(); // initial btc price with merchant's average
-    var btcExchangePrice = finalExchangeRateElem.text()*amountBtc.val(); // btc price with added premium by merchant
-    merchantProfit.text((parseFloat(btcExchangePrice)-parseFloat(btcAveragePrice)).toFixed(2));
+    var btcFinalExchangePrice = finalExchangeRateElem.text()*amountBtc.val(); // btc price with added premium by merchant
+    merchantProfit.text((parseFloat(btcFinalExchangePrice)-parseFloat(btcAveragePrice)).toFixed(2));
 }
 
 function calculateFee() {
@@ -114,7 +140,9 @@ function calculateFee() {
 
 function updateCollectAndToSend() {
     $("#toCollect").text((finalExchangeRateElem.text()*amountBtc.val()).toFixed(2));
-    $("#toSendBtc").text(parseFloat(parseFloat($("#amountBTC").val()).toFixed(8))); // super ugly, but core javascript doesnt have good api to work with numbers
+    if ( $.isNumeric( $("#amountBTC").val() ) ) {
+        $("#toSendBtc").text(parseFloat(parseFloat($("#amountBTC").val()).toFixed(8))); // super ugly, but core javascript doesnt have good api to work with numbers
+    }
 }
 
 /**

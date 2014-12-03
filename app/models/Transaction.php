@@ -6,7 +6,7 @@ class Transaction extends Eloquent {
 
     protected $fillable = array('user_id', 'type', 'note', 'bitcoin_amount', 'fiat_amount', 'fiat_currency_id',
         'sent_to_address', 'transaction_hash', 'confirms', 'bitcoin_current_rate_usd', 'remaining_bitcoin', 'sold', 'sale_profit',
-        'bitcoin_balance', 'fiat_balance', 'new_average');
+        'bitcoin_balance', 'fiat_balance', 'new_average', 'fiat_amount_market_rate', 'fee', 'tax', 'bitcoin_premium_exchange_rate');
 
 	public static function updateConfirmations($transaction_model, $confirmations) {
 		$transaction_model->confirms = $confirmations;

@@ -81,13 +81,18 @@
 .rateAjaxLoader {
     position: absolute;
     top: 22%;
-    display: none;
+    right: -15px;
 }
 .btn.btn-xs {
     height: 34px;
     line-height: 30px;
     padding: 0 6px;
     font-size: 14px;
+}
+
+.white {color: white;}
+#accountForm label {
+    color: #ccc;
 }
 
 @media (max-width: 767px) {
@@ -97,5 +102,12 @@
     .calculatorInputs {
         margin-left: 25px;
         margin-right: 25px;
+    }
+}
+
+@media (min-width: 768px) {
+    #accountForm .control-label {
+        padding-top: 15px;
+        margin-bottom: 0;
     }
 }
