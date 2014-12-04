@@ -155,7 +155,7 @@ class ControlController extends BaseController {
 			$sentTxModel->note = $jsonResp->message;
 		} else {
 			// failed to send payment, log and message merchant and us to email
-			$sentTxModel->note = $jsonResp->message;
+			$sentTxModel->note = $jsonResp->error;
 			$this->logPaymentFailure( $user, $sentTxModel, $email, $bitcoinAddress );
 		}
 		$sentTxModel->save();
