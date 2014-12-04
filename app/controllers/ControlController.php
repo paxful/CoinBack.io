@@ -19,7 +19,7 @@ class ControlController extends BaseController {
 
 	public function getIndex()
 	{
-		$transactions = Transaction::where('user_id', $this->user->id)->get();
+		$transactions = Transaction::where('user_id', $this->user->id)->orderBy('id', 'desc')->get();
 		$countries = LocationHelper::getCountriesList();
 		return View::make('control', array('transactions' => $transactions, 'country' => $countries));
 	}
