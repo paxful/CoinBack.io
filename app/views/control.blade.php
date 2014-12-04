@@ -150,7 +150,7 @@
                         <th>Amount</th>
                         <th>Rate</th>
                         <th>Price</th>
-                        <th>Profit</th>
+                        <th class="text-right">Profit</th>
                     </tr>
                 </thead>
                 <tbody>
