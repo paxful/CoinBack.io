@@ -50,6 +50,7 @@ Log::useDailyFiles(storage_path().'/logs/'.$logFile);
 
 App::error(function(Exception $exception, $code)
 {
+	MailHelper::sendAdminWarningEmail('Exception happened', 'Code: ' . $code . ', exception: ' . $exception);
 	Log::error($exception);
 });
 
