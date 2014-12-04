@@ -84,7 +84,7 @@
             <h5>Contact</h5>
             <address>
                 <p>+718 790 3303<br>
-                <a href="mailto:info@easybitz.com">email us</a></p>
+                <a href="mailto:easybitz@easybitz.com">email us</a></p>
                 <p>Made with <i class="fa fa-heart fa-inverse"></i> in Las Vegas</p>
                 <p>This project is Open Source. <a target="_blank" href="https://github.com/skyzer/coinback.io">Github link <i class="fa fa-github fa-inverse"></i></a></p>
             </address>
