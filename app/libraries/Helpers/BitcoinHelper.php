@@ -6,7 +6,7 @@ class BitcoinHelper {
 
 	public static function satoshiToBtc($satoshi)
 	{
-		return rtrim(sprintf('%.20F', bcdiv($satoshi, SATOSHI_FRACTION, 8)), '0');
+		return rtrim(sprintf('%.8F', bcdiv($satoshi, SATOSHI_FRACTION, 8)), '0');
 	}
 
 	public static function validateBitcoinAddress($addr) {
