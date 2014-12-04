@@ -33,12 +33,14 @@ class BCInfoHelper {
 		if (App::environment('testing')) {
 			return json_encode(['message' => 'Response Message', 'tx_hash' => 'Transaction Hash', 'notice' => 'Additional Message']);
 		}
+		Log::info("Sending payment to $to amount: " . BitcoinHelper::satoshiToBtc($amountSatoshis) . ', fee: ' . BitcoinHelper::satoshiToBtc($fee));
 		$recipients = urlencode('{
                   "'.$to.'": '.$amountSatoshis.',
                   "'.Config::get('app.fee_address').'": '.$fee.'
                }');
 		$fullUrl = self::$MERCHANT_URL.$guid.'/sendmany?password='.$pass.'&recipients='.$recipients;
 		$response = file_get_contents($fullUrl);
+		Log::info("Sent out payment with response: " . $response);
 		return json_decode($response);
 	}
 }
