@@ -39,56 +39,55 @@ Quick ghetto way to know your host name is with following PHP code `echo gethost
 5. Copy the below content in all your `.env.*.php` files and replace values to yours
 
 ```php
+<?php
+return array(
+'APP_DEBUG'         => true, // always FALSE for production. It shows the debugbar in browser and full stacktrace on screen if errors happen
 
-    <?php
-    return array(
-	'APP_DEBUG'         => true, // always FALSE for production. It shows the debugbar in browser and full stacktrace on screen if errors happen
+'ENCRYPTION_KEY' => 'xxxxxx5@xxxx%kxxhO^-xxxE1', // random 32 characters encryption key used to encrypt passwords and other sensitive data
 
-	'ENCRYPTION_KEY' => 'xxxxxx5@xxxx%kxxhO^-xxxE1', // random 32 characters encryption key used to encrypt passwords and other sensitive data
+'DATABASE_DRIVER'   => 'pgsql', // for postgres its 'pgsql' - check in Laravel documentation
+'DATABASE_NAME'     => 'coinback',
+'DATABASE_USER'     => 'user',
+'DATABASE_PASSWORD' => 'pass',
 
-	'DATABASE_DRIVER'   => 'pgsql', // for postgres its 'pgsql' - check in Laravel documentation
-	'DATABASE_NAME'     => 'coinback',
-	'DATABASE_USER'     => 'user',
-	'DATABASE_PASSWORD' => 'pass',
+/* keeping locations and blocks table in separate database. you can have it same as first database, just fill same values as your first database */
+'DATABASE_2'        => 'pgsql2',
+'DATABASE_2_NAME'   => 'easybitz',
+'DATABASE_2_USER'   => 'user',
+'DATABASE_2_PASSWORD'=> 'pass',
 
-	/* keeping locations and blocks table in separate database. you can have it same as first database, just fill same values as your first database */
-	'DATABASE_2'        => 'pgsql2',
-	'DATABASE_2_NAME'   => 'easybitz',
-	'DATABASE_2_USER'   => 'user',
-	'DATABASE_2_PASSWORD'=> 'pass',
+/* Only used to validate bitcoin address correctness. values either mainnet or testnet.
+ * Here can be only mainnet because blockchain.info doesnt have testnet */
+'BITCOIN_VERSION' => 'mainnet',
 
-	/* Only used to validate bitcoin address correctness. values either mainnet or testnet.
-	 * Here can be only mainnet because blockchain.info doesnt have testnet */
-	'BITCOIN_VERSION' => 'mainnet',
+/*  your blockchain.info API key */
+'BCINFO_KEY'        => 'xxxxxx-aaaaa-ffff-oooo-xxxxxxx',
 
-	/*  your blockchain.info API key */
-	'BCINFO_KEY'        => 'xxxxxx-aaaaa-ffff-oooo-xxxxxxx',
+/* your chain.com API credentials */
+'CHAIN_COM_ID'      => 'xxxxxxxxxxx',
+'CHAIN_COM_SECRET'  => 'xxxxxxxxxxx',
+'CHAIN_COM_API_URL' => 'https://api.chain.com/v2',
+/** callback URL to where chain.com shoots of incoming transaction. Here it's in @ControlController#postReceive*/
+'CHAIN_COM_NOTIFICATION_URL' => 'http://example.com/process/receive',
 
-	/* your chain.com API credentials */
-	'CHAIN_COM_ID'      => 'xxxxxxxxxxx',
-	'CHAIN_COM_SECRET'  => 'xxxxxxxxxxx',
-	'CHAIN_COM_API_URL' => 'https://api.chain.com/v2',
-	/** callback URL to where chain.com shoots of incoming transaction. Here it's in @ControlController#postReceive*/
-	'CHAIN_COM_NOTIFICATION_URL' => 'http://example.com/process/receive',
+/* here using SendGrid as SMTP service to send emails. You can replace SendGrid with any other SMTP provider
+* Values from here are set in app/config/mail.php */
+'MAIL_ADMIN'        => 'your_email@example.com', // admin email to where error logs are sent
+'MAIL_FROM'         => 'your_email@example.com',
+'MAIL_FROM_NAME'    => 'Coinback',
+'MAIL_HOST'         => 'smtp.sendgrid.net',
+'MAIL_PORT'         => 587,
+'MAIL_USER'         => 'your_sendgrid_user_here', // sendgrid user
+'MAIL_PASS'         => 'your_sendgrid_password', // sendgrid password
 
-	/* here using SendGrid as SMTP service to send emails. You can replace SendGrid with any other SMTP provider
-	* Values from here are set in app/config/mail.php */
-	'MAIL_ADMIN'        => 'your_email@example.com', // admin email to where error logs are sent
-	'MAIL_FROM'         => 'your_email@example.com',
-	'MAIL_FROM_NAME'    => 'Coinback',
-	'MAIL_HOST'         => 'smtp.sendgrid.net',
-	'MAIL_PORT'         => 587,
-	'MAIL_USER'         => 'your_sendgrid_user_here', // sendgrid user
-	'MAIL_PASS'         => 'your_sendgrid_password', // sendgrid password
+/* Where to send error messages. start with country code (no + sign in front), phones are comma separated */
+'ADMIN_PHONES' => '',
 
-	/* Where to send error messages. start with country code (no + sign in front), phones are comma separated */
-	'ADMIN_PHONES' => '',
-
-	/* Plivo credentials */
-	'PLIVO_ID'          => 'xxxxxxxx',
-	'PLIVO_TOKEN'       => 'xxxxxxxxxxxxxxxxx',
-	'PLIVO_NUMBER'      => 'xxxxxx', // your registered plivo number
-    );
+/* Plivo credentials */
+'PLIVO_ID'          => 'xxxxxxxx',
+'PLIVO_TOKEN'       => 'xxxxxxxxxxxxxxxxx',
+'PLIVO_NUMBER'      => 'xxxxxx', // your registered plivo number
+);
 ```
 
 #### Next steps are important that are actually seeding db and importing dependencies  
@@ -118,18 +117,17 @@ ALTER FUNCTION inet_to_bigint(inet)
 So it should be
 
 ```php
+public static function getUserLocationByIp($ip)
+{
+    if (!starts_with($ip, '::ffff:')) {
+        $ip = '::ffff:'.$ip;
+    }
 
-	public static function getUserLocationByIp($ip)
-	{
-		if (!starts_with($ip, '::ffff:')) {
-			$ip = '::ffff:'.$ip;
-		}
-
-		// no ip4r module
-        return Location::with('country')
-                       ->whereRaw('locations.id = ( select geoname_id from blocks where net_ip >>= ? )',
-                           array($ip))->first();
-	}
+    // no ip4r module
+    return Location::with('country')
+                   ->whereRaw('locations.id = ( select geoname_id from blocks where net_ip >>= ? )',
+                       array($ip))->first();
+}
 ```
 
 *With above method without ip4r querying for user location could take up to 5 seconds!*
