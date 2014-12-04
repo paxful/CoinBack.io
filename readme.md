@@ -19,24 +19,24 @@ Thus you have to make sure that you are registered at both of these API provider
 Blockchain.info requires manual approval from their side
 ### Tech stack and required libraries/dependencies
 + PHP version 5.4+
-+ Laravel framework (comes with coinback.io project)
++ Laravel 4 framework (comes with coinback.io project)
 + [Composer](https://getcomposer.org/) to pull all dependencies for Laravel framework
 + Apache/Nginx server - must do URL rewriting by Laravel convention - [http://laravel.com/docs/4.2/installation](http://laravel.com/docs/4.2/installation#pretty-urls)
 + PostgreSQL (or any relational database)
-+ SendGrid or other SMTP mail provider to send emails
++ SendGrid or other SMTP provider to send emails
 + Plivo API for sending out SMS
-+ *Optional* IP4R module for Postgres for faster IP to location lookup
++ *Optional* IP4R module for Postgres for faster IP to location lookup - *query time decreases from 5 seconds to 100 milliseconds*
 
-**Before continuing, get yourself familiar with Laravel**
+**Before continuing, get yourself familiar with [Laravel 4](http://laravel.com/docs/4.2/introduction)**
 
 ### Installations
 1. Clone this project
-2. By Laravel convention in you have to create `.env.*php` files in your local/staging/production environments. More details about it [here](http://laravel.com/docs/4.2/configuration#protecting-sensitive-configuration)
-3. Create in root folder of project `.env.local.php` and `.env.testing.php` (for unit testing) in your local machine and `.env.php` in your production website.  
+2. By Laravel convention you have to create `.env.*php` files in your local/staging/production environments. More details about it [here](http://laravel.com/docs/4.2/configuration#protecting-sensitive-configuration)
+3. Create in root folder of project in your local machine `.env.local.php` and `.env.testing.php` (for unit testing) files and `.env.php` in your production server.  
 We will fill their contents in a moment
 4. In `bootstrap/start.php` around line 27 inside `$app->detectEnvironment` fill your machines correct host name for local and production, also for staging if you plan to have it  
 Quick ghetto way to know your host name is with following PHP code `echo gethostname();`
-5. Copy the below content in all your `.env.*.php` files and replace values to yours
+5. Copy the below content in all your `.env.*php` files and replace values to yours
 
 ```php
 <?php
@@ -97,8 +97,8 @@ Now after you have filled your environment files, it's time to fetch all Laravel
 7. Now again in root folder run `php artisan migrate` which creates required tables for the project. This is schema builder script which files are located in `app/database/migrations`
 8. Import downloaded `locations` and `block` tables from MaxMind either to separate database or same database. In `.env.*.php` you specified `DATABASE_2` value in which database is located locations data
 9. Make sure to rename primary key column in `locations` table from `location_id` to `id` because by Laravel Eloquent convention the primary key for every table is just `id`.  
-Blocks table must stay as it is, no need to rename column because we are not using Eloquent ORM for that.
-10. Now is time for IP4R module in PostgreSQL.  
+Blocks table must stay as it is, no need to rename column because we are not using Eloquent ORM for that
+10. Now is time for IP4R module in PostgreSQL  
 Run this SQL query to create a function
 
 ```
@@ -113,7 +113,7 @@ ALTER FUNCTION inet_to_bigint(inet)
   OWNER TO postgres;
 ```
 
-**If you don't have it or using something else than Postgres** then in `app/models/Location.php` in method `public static function getUserLocationByIp($ip)` remove the `else` part in code and `App::environment` checking.  
+**If you don't have it or you are using something else than Postgres** then in `app/models/Location.php` in method `public static function getUserLocationByIp($ip)` remove the `else` part in code and `App::environment` checking.  
 So it should be
 
 ```php
@@ -130,10 +130,16 @@ public static function getUserLocationByIp($ip)
 }
 ```
 
-*With above method without ip4r querying for user location could take up to 5 seconds!*
+*With above method without ip4r a query for user location could take up to 5 seconds!*
 
 **If you have IP4R module for postgres** leave `Location.php` as it is.
 
 Now the preparation is done and website should be up and running and everything working!
+
+### Localization
+Whole project can be localized and Laravel has extremely easy way to localize project!  
+The translations are located in `app/lang/en` folder and instead of `en` folder is your 2 letter lowercase language code.  
+To output the text in code, use `trans('web.text')` where `web` is the file name where translations are and `text` is the key for the string.  
+Find out more about localization in [Laravel documentation](http://laravel.com/docs/4.2/localization)
 
 *Bitcoin donations appreciated* **15i5suRE85XadSoQV2HSFo2jy2KfB64oUa**
