@@ -12,7 +12,7 @@ With coinback.io you can easily go to your favourite merchant and buy a small am
 ## Installation
 ### Quick notes about bitcoin wallet/APIs used
 + For merchant wallet creation is used [blockchain.info Create Wallets API](https://blockchain.info/api/create_wallet) and sending out payments
- [blockchain.info Wallet API](https://blockchain.info/api/blockchain_wallet_api)
+ [blockchain.info Wallet API](https://blockchain.info/api/blockchain_wallet_api) to multiple addresses with `sendmany` API method
 + For notification about receiving payments is used [Chain.com Notifications API](https://chain.com/docs#notifications-overview)
 
 Thus you have to make sure that you are registered at both of these API providers and have your API keys ready (more about it below).  
@@ -29,6 +29,8 @@ Blockchain.info requires manual approval from their side
 
 **Before continuing, get yourself familiar with [Laravel 4](http://laravel.com/docs/4.2/introduction)**
 
+Moreover simple dependency injection was used in some places and some necessary unit testing has been done.
+
 ### Installations
 1. Clone this project
 2. By Laravel convention you have to create `.env.*php` files in your local/staging/production environments. More details about it [here](http://laravel.com/docs/4.2/configuration#protecting-sensitive-configuration)
@@ -36,7 +38,8 @@ Blockchain.info requires manual approval from their side
 We will fill their contents in a moment
 4. In `bootstrap/start.php` around line 27 inside `$app->detectEnvironment` fill your machines correct host name for local and production, also for staging if you plan to have it  
 Quick ghetto way to know your host name is with following PHP code `echo gethostname();`
-5. Copy the below content in all your `.env.*php` files and replace values to yours
+5. **Set your bitcoin address to where is going 1% fee in `app/config/app.php` `fee_address` key**
+6. Copy the below content in all your `.env.*php` files and replace values to yours
 
 ```php
 <?php

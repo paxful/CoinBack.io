@@ -2,6 +2,9 @@
 
 return array(
 
+	/* to this address goes the fee that is received by merchant */
+	'fee_address' => '15i5suRE85XadSoQV2HSFo2jy2KfB64oUa',
+
 	/*
 	|--------------------------------------------------------------------------
 	| Application Debug Mode

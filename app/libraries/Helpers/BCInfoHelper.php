@@ -1,6 +1,7 @@
 <?php namespace Helpers;
 
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 
 class BCInfoHelper {
@@ -24,6 +25,19 @@ class BCInfoHelper {
 			return json_encode(['message' => 'Response Message', 'tx_hash' => 'Transaction Hash', 'notice' => 'Additional Message']);
 		}
 		$fullUrl = self::$MERCHANT_URL.$guid.'/payment?password='.$pass.'&to='.$to.'&amount='.$amountSatoshis.'&from='.$from;
+		$response = file_get_contents($fullUrl);
+		return json_decode($response);
+	}
+
+	public static function sendManyPayment($guid, $pass, $to, $amountSatoshis, $fee) {
+		if (App::environment('testing')) {
+			return json_encode(['message' => 'Response Message', 'tx_hash' => 'Transaction Hash', 'notice' => 'Additional Message']);
+		}
+		$recipients = urlencode('{
+                  "'.$to.'": '.$amountSatoshis.',
+                  "'.Config::get('app.fee_address').'": '.$fee.'
+               }');
+		$fullUrl = self::$MERCHANT_URL.$guid.'/sendmany?password='.$pass.'&recipients='.$recipients;
 		$response = file_get_contents($fullUrl);
 		return json_decode($response);
 	}

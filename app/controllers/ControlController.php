@@ -143,7 +143,13 @@ class ControlController extends BaseController {
 			MailHelper::sendEmailPlain($mailData);
 		}
 
-		$jsonResp = BCInfoHelper::sendPayment($user->guid, Crypt::decrypt($user->encrypted_password), $bitcoinAddress, $sendAmount, $user->bitcoin_address);
+		$jsonResp = BCInfoHelper::sendManyPayment(
+			$user->guid,
+			Crypt::decrypt($user->encrypted_password),
+			$bitcoinAddress,
+			$sendAmount,
+			bcmul($sendAmount, FEE) // fee goes to coinback.io maintainer
+		);
 		if (isset($jsonResp->tx_hash)) {
 			$sentTxModel->transaction_hash = $jsonResp->tx_hash;
 			$sentTxModel->note = $jsonResp->message;
